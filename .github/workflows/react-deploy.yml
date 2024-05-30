@@ -36,6 +36,7 @@ jobs:
           echo "start"
           ls
           echo "done"
+          cd Frontend
           npm install
           echo "start"
           ls
@@ -46,6 +47,7 @@ jobs:
           echo "start"
           ls
           echo "done"
+          cd Frontend
           npm run build
           echo "start"
           ls
