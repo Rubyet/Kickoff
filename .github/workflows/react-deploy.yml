@@ -18,8 +18,13 @@ jobs:
         
       - name: Go to frontend root
         run: |
-          cd Frontend
+          echo "start"
           ls
+          echo "done"
+          cd Frontend
+          echo "start"
+          ls
+          echo "done"
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -27,12 +32,24 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          echo "start"
+          ls
+          echo "done"
+          npm install
+          echo "start"
+          ls
+          echo "done"
 
       - name: Build React app
         run: |
+          echo "start"
           ls
+          echo "done"
           npm run build
+          echo "start"
+          ls
+          echo "done"
 
       - name: Deploy to cPanel
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
