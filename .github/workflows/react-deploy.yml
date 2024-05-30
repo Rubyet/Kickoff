@@ -15,43 +15,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        
-      - name: Go to frontend root
-        run: |
-          echo "start"
-          ls
-          echo "done"
-          cd Frontend
-          echo "start"
-          ls
-          echo "done"
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: |
-          echo "start"
-          ls
-          echo "done"
-          cd Frontend
-          npm install
-          echo "start"
-          ls
-          echo "done"
-
       - name: Build React app
         run: |
-          echo "start"
-          ls
-          echo "done"
           cd Frontend
+          npm cache clean
+          rm -rf node_modules
+          npm install
           npm run build
-          echo "start"
-          ls
-          echo "done"
 
       - name: Deploy to cPanel
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
