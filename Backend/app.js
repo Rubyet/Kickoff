@@ -103,18 +103,18 @@ app.get('/random/:id', (req, res) => {
 
         for (let i = 0; i < NoOfPlayers; i++) {
             const player = {};
-            player.playerName = NameOfPlayers[i]; // Assuming NameOfPlayers is defined elsewhere
-            player.playerImage = ImageOfPlayers[i]; // Assuming ImageOfPlayers is defined elsewhere
+            player.playerName = NameOfPlayers[i]; 
+            player.playerImage = ImageOfPlayers[i];
             player.teams = [];
             for (let j = 0; j < TeamsPerPlayer; j++) {
                 // Retrieve the team information based on randomTeams[j]
-                const teamIndex = TeamIndexes[i * TeamsPerPlayer + j]; // Calculate the index based on randomTeams
+                const teamIndex = TeamIndexes[i * TeamsPerPlayer + j];
                 player.teams.push({
-                    team: TeamNames[teamIndex - 1], // Assuming TeamNames is defined elsewhere
-                    logo: TeamLogos[teamIndex - 1] // Assuming TeamLogos is defined elsewhere
+                    team: TeamNames[teamIndex - 1],
+                    logo: TeamLogos[teamIndex - 1]
                 });
             }
-            response.push(player); // Assuming response is defined elsewhere
+            response.push(player); 
         }
     }
 
