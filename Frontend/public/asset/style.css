@@ -8,10 +8,10 @@ body {
     background-color: rgba(255, 255, 255, 0.15); /* More translucent background */
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    opacity: 0;
+    /* opacity: 0; */
     transform: translateY(50px);
     transition: opacity 1s ease, transform 1s ease;
-    width: 350px;
+    /* width: 350px; */
     backdrop-filter: blur(10px); /* Blur effect */
     -webkit-backdrop-filter: blur(10px); /* For Safari */
     border-radius: 15px; /* Optional: rounded corners */
@@ -39,8 +39,8 @@ body {
 }
 
 .card-body img {
-    width: 100px;
-    height: 100px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 0;
 }
@@ -51,9 +51,9 @@ body {
     color: white;
 }
 
-.hidden img,
+/* .hidden img,
 .hidden p,
 .hidden {
     opacity: 0;
-}
+} */
 

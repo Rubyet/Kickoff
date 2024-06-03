@@ -1,95 +1,124 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 function Random() {
+    const [gameData, setGameData] = useState([])
+    const data = [
+        {
+            "playerName":"Person 1",
+            "playerImage":"https://fifafixture.rubyet.info/img/teams_logo/73.webp",
+            "teams":[
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                },
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                }
+            ]
+        },
+        {
+            "playerName":"Person 2",
+            "playerImage":"https://fifafixture.rubyet.info/img/teams_logo/73.webp",
+            "teams":[
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                },
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                }
+            ]
+        },
+        {
+            "playerName":"Person 3",
+            "playerImage":"https://fifafixture.rubyet.info/img/teams_logo/73.webp",
+            "teams":[
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                },
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                }
+            ]
+        },
+        {
+            "playerName":"Person 4",
+            "playerImage":"https://fifafixture.rubyet.info/img/teams_logo/73.webp",
+            "teams":[
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                },
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                },
+                {
+                    "team":"Everton F.C.",
+                    "logo":"https://fifafixture.rubyet.info/img/teams_logo/65.webp"
+                }
+            ]
+        }
+
+    ]
+
+    const [blockSize, setBlockSize] = useState()
+    const [containerSize, setContainerSize] = useState()
+
     useEffect(() => {
-        const cards = document.querySelectorAll('.card');
-        let totalImages = 0;
+        if (data.length == 2) {
+            setBlockSize(6)
+            setContainerSize("container")
+        } else if (data.length == 3) {
+            setBlockSize(4)
+            setContainerSize("container")
+        } else if (data.length == 4) {
+            setBlockSize(3)
+            setContainerSize("container-fluid")
+        } else if (data.length >= 5) {
+            setBlockSize(2)
+            setContainerSize("container-fluid")
+        }
+    }, [data.length]);
 
-        cards.forEach((card, index) => {
-            setTimeout(() => {
-                card.classList.add('card-visible');
-                const smallImages = card.querySelectorAll('.small-image');
-                totalImages += smallImages.length;
-
-                smallImages.forEach((smallImage, imgIndex) => {
-                    setTimeout(() => {
-                        smallImage.classList.remove('hidden');
-                        smallImage.classList.add('revealed');
-                        totalImages--;
-
-                        // Check if this is the last image being revealed
-                        if (totalImages === 0) {
-                            document.getElementById('next-button').classList.remove('hidden');
-                        }
-                    }, 5000 * (imgIndex + 1)); // Reveals small images with a 3-second interval
-                });
-            }, index * 1000);
-        });
+    useEffect(() => {
+        setGameData(data)
     }, []);
     return (
         <>
-                <div className="container d-flex justify-content-center align-items-center min-vh-100 flex-column">
-        <div className="row">
-            <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div className="card text-center card-hidden">
-                    <img src="https://fifafixture.rubyet.info/img/teams_logo/73.webp"
-                        className="card-img-top rounded-circle mx-auto mt-3" alt="Person 1"/>
-                    <div className="card-body">
-                        <h5 className="card-title">Person 1</h5>
-                        <div className="d-flex justify-content-between small-images">
-                            <div className="small-image hidden">
-                                <img src="https://fifafixture.rubyet.info/img/teams_logo/243.webp" alt="Small 1"/>
-                                <p>Small Image 1 Description</p>
+            <div className={containerSize}>
+                <div className='d-flex justify-content-center min-vh-100 flex-column'>
+                    <div className="row">
+                        {gameData.map((game, index) => (
+                            <div className={`col-lg-${blockSize} mb-4`} key={index}>
+                                <div className="card text-center card-hidden">
+                                    <img src={game.playerImage}
+                                        className="card-img-top rounded-circle mx-auto mt-3" alt="Person 1" />
+                                    <div className="card-body">
+                                        <h5 className="card-title text-white">{game.playerName}</h5>
+                                        <div className="d-flex justify-content-around">
+                                            {game.teams.map((team, index) => (
+                                                <div className="" key={index}>
+                                                    <img src={team.logo} className="small-image hidden" alt={team.team} />
+                                                    <p className='text-white'>{team.team}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div className="small-image hidden">
-                                <img src="https://fifafixture.rubyet.info/img/teams_logo/243.webp" alt="Small 2"/>
-                                <p>Small Image 2 Description</p>
-                            </div>
-                        </div>
+                        ))}
+                    </div>
+                    <div className="text-center">
+                        <button id="next-button" className="btn btn-primary mt-5 w-25 hidden">Next</button>
                     </div>
                 </div>
+
             </div>
-            <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div className="card text-center card-hidden">
-                    <img src="https://fifafixture.rubyet.info/img/teams_logo/73.webp"
-                        className="card-img-top rounded-circle mx-auto mt-3" alt="Person 2"/>
-                    <div className="card-body">
-                        <h5 className="card-title">Person 2</h5>
-                        <div className="d-flex justify-content-between small-images">
-                            <div className="small-image hidden">
-                                <img src="https://fifafixture.rubyet.info/img/teams_logo/243.webp" alt="Small 1"/>
-                                <p>Small Image 1 Description</p>
-                            </div>
-                            <div className="small-image hidden">
-                                <img src="https://fifafixture.rubyet.info/img/teams_logo/243.webp" alt="Small 2"/>
-                                <p>Small Image 2 Description</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
-                <div className="card text-center card-hidden">
-                    <img src="https://fifafixture.rubyet.info/img/teams_logo/73.webp"
-                        className="card-img-top rounded-circle mx-auto mt-3" alt="Person 3"/>
-                    <div className="card-body">
-                        <h5 className="card-title">Person 3</h5>
-                        <div className="d-flex justify-content-between small-images">
-                            <div className="small-image hidden">
-                                <img src="https://fifafixture.rubyet.info/img/teams_logo/243.webp" alt="Small 1"/>
-                                <p>Small Image 1 Description</p>
-                            </div>
-                            <div className="small-image hidden">
-                                <img src="https://fifafixture.rubyet.info/img/teams_logo/243.webp" alt="Small 2"/>
-                                <p>Small Image 2 Description</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button id="next-button" className="btn btn-primary mt-4 hidden">Next</button>
-    </div>
         </>
     )
 }
