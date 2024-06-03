@@ -16,17 +16,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Build React app
-        run: |
-          cd Backend
-          npm install
-          npm run build
-
       - name: Deploy to cPanel
         uses: SamKirkland/FTP-Deploy-Action@4.3.0
         with:
@@ -34,5 +23,5 @@ jobs:
           username: ${{ secrets.BACKEND__CPANEL_USERNAME }}
           password: ${{ secrets.BACKEND__CPANEL_PASSWORD }}
           port: 21
-          local-dir: . # Adjusted local directory
+          local-dir: Backend/
           server-dir: /
