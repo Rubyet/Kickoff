@@ -1,93 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react'
 import './random.css'
+import axios from 'axios'
 
 function Random() {
+    const BaseURL = import.meta.env.VITE_API_BASE_URL;
     const [gameData, setGameData] = useState([])
-    const data = [
-        {
-            "playerName": "Person 1",
-            "playerImage": "https://fifafixture.rubyet.info/img/teams_logo/73.webp",
-            "teams": [
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                },
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                }
-            ]
-        },
-        {
-            "playerName": "Person 2",
-            "playerImage": "https://fifafixture.rubyet.info/img/teams_logo/73.webp",
-            "teams": [
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                },
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                }
-            ]
-        },
-        {
-            "playerName": "Person 3",
-            "playerImage": "https://fifafixture.rubyet.info/img/teams_logo/73.webp",
-            "teams": [
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                },
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                }
-            ]
-        },
-        {
-            "playerName": "Person 4",
-            "playerImage": "https://fifafixture.rubyet.info/img/teams_logo/73.webp",
-            "teams": [
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                },
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                },
-                {
-                    "team": "Everton F.C.",
-                    "logo": "https://fifafixture.rubyet.info/img/teams_logo/65.webp"
-                }
-            ]
-        }
-
-    ]
-
     const [blockSize, setBlockSize] = useState()
     const [containerSize, setContainerSize] = useState()
     const outerDiv = useRef(null);
+
+    const getData = async() => {
+        axios.get(`${BaseURL}/random/2`).then((response) => {
+            setGameData(response.data)
+        }
+        )
+    }
+
     useEffect(() => {
-        if (data.length == 2) {
+        if (gameData.length == 2) {
             setBlockSize(6)
             setContainerSize("container")
-        } else if (data.length == 3) {
+        } else if (gameData.length == 3) {
             setBlockSize(4)
             setContainerSize("container")
-        } else if (data.length == 4) {
+        } else if (gameData.length == 4) {
             setBlockSize(3)
             setContainerSize("container-fluid")
-        } else if (data.length >= 5) {
+        } else if (gameData.length >= 5) {
             setBlockSize(2)
             setContainerSize("container-fluid")
         }
-    }, [data.length]);
+    }, [gameData.length]);
 
     useEffect(() => {
-        setGameData(data)
+        getData()
     }, []);
 
     useEffect(() => {
