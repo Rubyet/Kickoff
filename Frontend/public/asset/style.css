@@ -1,0 +1,59 @@
+body {
+    background: url('https://fifafixture.rubyet.info/img/Background/Football-Stadium-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    /* overflow: hidden; */
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.15); /* More translucent background */
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* opacity: 0; */
+    transform: translateY(50px);
+    transition: opacity 1s ease, transform 1s ease;
+    /* width: 350px; */
+    backdrop-filter: blur(10px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    border-radius: 15px; /* Optional: rounded corners */
+  }
+
+.card.card-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.card-img-top {
+    width: 120px;
+    /* Increase main image size */
+    height: 120px;
+    object-fit: cover;
+}
+
+.card-body h5 {
+    font-size: 1.2rem;
+    /* Smaller text size */
+}
+
+.card-body .small-images {
+    justify-content: space-between;
+}
+
+.card-body img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+.small-image img,
+.small-image p {
+    transition: opacity 1s ease;
+    color: white;
+}
+
+/* .hidden img,
+.hidden p,
+.hidden {
+    opacity: 0;
+} */
+
