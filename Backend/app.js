@@ -56,7 +56,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/random', (req, res) => {
-    res.send('Randomize');
     NoOfPlayers = 3;
     TeamsPerPlayer = 2;
     teams = [1,2,3,4,5,6]
@@ -89,7 +88,7 @@ app.get('/random', (req, res) => {
     player = assignTeamsToPlayers(NoOfPlayers,TeamsPerPlayer,teams )
 
     console.log(player);
-
+    res.send(player);
 });
 
 app.listen(port, () => {
