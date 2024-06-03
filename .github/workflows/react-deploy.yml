@@ -34,6 +34,6 @@ jobs:
           username: ${{ secrets.CPANEL_USERNAME }}
           password: ${{ secrets.CPANEL_PASSWORD }}
           port: ${{ secrets.CPANEL_PORT }}
-          local-dir: Frontend/build/ # Adjusted local directory
+          local-dir: Frontend/dist/ # Adjusted local directory
           server-dir: /
 
