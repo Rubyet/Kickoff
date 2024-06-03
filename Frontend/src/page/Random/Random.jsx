@@ -113,7 +113,7 @@ function Random() {
                 <div className='d-flex justify-content-center min-vh-100 flex-column'>
                     <div className="row">
                         {gameData.map((game, index) => (
-                            <div className={`col-lg-${blockSize} mb-4`} key={index} data-aos="fade-up" data-aos-delay={`${index * 1000}`}>
+                            <div className={`col-lg-${blockSize} mb-4 cardBorder`} key={index} data-aos="fade-up" data-aos-delay={`${index * 1000}`}>
                                 <div className="card text-center card-hidden">
                                     <img src={game.playerImage}
                                         className="card-img-top rounded-circle mx-auto mt-3" alt="Person 1" />
