@@ -60,8 +60,8 @@ app.get('/', (req, res) => {
 
 app.get('/random/:id', (req, res) => {
     const response = [];
-    const NameOfPlayers = ["Person 1", "Person 2", "Person 3"];
-    const ImageOfPlayers = ["https://admin.kickoff.rubyet.info/public/images/players/ronaldo.png", "https://admin.kickoff.rubyet.info/images/players/messi.png", "https://admin.kickoff.rubyet.info/images/players/neimar.png"];
+    const NameOfPlayers = ["Person 1", "Person 2", "Person 3", "Person 4"];
+    const ImageOfPlayers = ["https://admin.kickoff.rubyet.info/public/images/players/ronaldo.png", "https://admin.kickoff.rubyet.info/images/players/messi.png", "https://admin.kickoff.rubyet.info/images/players/neimar.png" "https://admin.kickoff.rubyet.info/images/players/messi.png"];
 
     const TeamNames = ["Accrington Stanley", "Arsenal", "Everton F.C.", "Blackpool F.C.", "Brentford F.C.", "Sunderland A.F.C.", "Blackpool F.C.", "Brentford F.C.", "Sunderland A.F.C."];
     const TeamLogos = ["https://fifafixture.rubyet.info/img/teams_logo/1.webp", "https://fifafixture.rubyet.info/img/teams_logo/2.webp", "https://fifafixture.rubyet.info/img/teams_logo/3.webp", "https://fifafixture.rubyet.info/img/teams_logo/4.webp", "https://fifafixture.rubyet.info/img/teams_logo/5.webp", "https://fifafixture.rubyet.info/img/teams_logo/6.webp", "https://fifafixture.rubyet.info/img/teams_logo/7.webp", "https://fifafixture.rubyet.info/img/teams_logo/8.webp", "https://fifafixture.rubyet.info/img/teams_logo/9.webp"];
