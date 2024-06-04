@@ -1,26 +1,26 @@
-.fifa_card{
-    width: 350px;
-    height: 500px;
-    position: relative;  
-    transition-duration: 300ms;
-    transition-property: transform, box-shadow;
-    transition-timing-function: ease-out;
-    transform: rotate3d(0);
-    cursor:pointer;
-    color: #fff;
-    display: block;
-  }
-  
-  
-  .bg{
-    width:100%;
-    height:100%;
-    background: url(https://i.imgur.com/tUk5SC0.png);
-    background-size: cover;
-    z-index:1;  
-  }
-  
-  /* .shine{
+.fifa_card {
+  width: 350px;
+  height: 500px;
+  position: relative;
+  transition-duration: 300ms;
+  transition-property: transform, box-shadow;
+  transition-timing-function: ease-out;
+  transform: rotate3d(0);
+  cursor: pointer;
+  color: #fff;
+  display: block;
+}
+
+
+.bg {
+  width: 100%;
+  height: 100%;
+  background: url(https://i.imgur.com/tUk5SC0.png);
+  background-size: cover;
+  z-index: 1;
+}
+
+/* .shine{
     width:290px;
     height:470px;
     border-radius:50%;
@@ -35,155 +35,158 @@
     z-index: 1;
     position: absolute;
   } */
-  
-  /* background: #74ebd5;  /* fallback for old browsers */
+
+/* background: #74ebd5;  /* fallback for old browsers */
 /* background: -webkit-linear-gradient(to right, #ACB6E5, #74ebd5);  Chrome 10-25, Safari 5.1-6 */
-/* background: linear-gradient(to right, #ACB6E5, #74ebd5); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */ 
+/* background: linear-gradient(to right, #ACB6E5, #74ebd5); W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-  .status{
-    display:flex; 
-    align-items: center;
-    flex-flow: column wrap;
-    width:70px;
-    height:200px;
-    position: absolute;
-    top:90px;
-    left:80px;
-    text-align:center;
-    /* border-top-left-radius:30px;
-    border-top-right-radius:30px; */
-    z-index: 3;
-    background: #74ebd558;
-    background: -webkit-linear-gradient(to right, #ACB6E558, #74ebd558);
-    background: linear-gradient(to top, #ffffff00, #024a3db3);
-    box-shadow: 0 8px 32px 0 #74ebd55e;
-    backdrop-filter: blur(0.6px);
-    /* border-radius: 10px; */
-    /* border: 1px solid rgba( 255, 255, 255, 0.18 ); */
-  }
-  
-  .lvl{
-    font-size:3rem;
-    font-weight:500; 
-    margin-top:20px;  
-  }
-  
-  .pos{
-    margin-top:-15px;
-    font-size:1.5rem;
-  }
-  
-  .country{
-    background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/320px-Flag_of_Bangladesh.svg.png);
-    background-size: cover;
-    width:30px;
-    height: 20px;
-  }
-  
-  .team{
-    margin-top:10px;
-    background: url(https://upload.wikimedia.org/wikipedia/sco/5/56/Real_Madrid_CF.svg);
-    background-size:cover;
-     width: 33px;
-     height: 45px;
-  }
-  
-  .player{
-    background-size:cover;
-    width:220px;
-    height:250px;
-    position: absolute;
-    top:40px;
-    right:20px;
-    z-index:2;
-  }
-  
-  .details{
-    display:flex;
-    flex-flow: column nowrap;
-    justify-content: center;
-    align-itens: center;  
-    width:260px;
-    height: 180px;
-    background: none;
-    position: absolute;
-    bottom:90px;
-    left:50px;
-  }
-  
-  .details h2{    
-    font-size: 2rem;
-    font-weight: bolder;
-    text-shadow: 2px 2px 2px black;  
-  }
-  
-  .underline{
-    display: inline-block;
-    width:72%;  
-    border-bottom: 1px solid #24ccff;
-  }
-  
-  .area_attr{
-    display:flex;
-    justify-content: center;
-    width: 100%; 
-    margin-top: 25px;
-  }
-  
-  .attr{    
-    width:45%;
-    height: 80px;
-    margin-top:-40px;     
-  }
-  
-  .bdr{
-     border-right: 1px solid #24ccff;
-  }
-  
-  .attr p{
-    font-size: 1.2rem;
-    padding:0;
-    margin:0;
-  }
-  
-  .controls{
-    margin-top: 50px;
-    display:flex;
-    justify-content: center;
-    align-items:center;   
-  }
-  
-  select{  
-    width: 200px;
-    font-size:1.5rem;
-    padding: 5px;
-    border-radius:8px;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  
-  #btnCard{
-    background: rgb(25,23,82);
-    color: white;
-    border: none;
-    padding:13px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  
-  #btnCard:hover{
-     background: rgb(35,33,116);
-  }
-
-  .front {
-    position: relative;
-    transform: rotateY(180deg);
-    backface-visibility: hidden;
-    animation: cardFrontAni 4s cubic-bezier(0.73, 0.32, 0.03, 1.05);
-    animation-fill-mode: forwards;
+.status {
+  display: flex;
+  align-items: center;
+  flex-flow: column wrap;
+  width: 70px;
+  height: 265px;
+  position: absolute;
+  top: 37px;
+  left: 80px;
+  text-align: center;
+  border-top-left-radius: 90px;
+  border-top-right-radius: 25px;
+  z-index: 3;
+  background: #74ebd558;
+  background: -webkit-linear-gradient(to right, #ACB6E558, #74ebd558);
+  background: linear-gradient(to top, #00000000, #00000096, #00000000);
+  box-shadow: 0 8px 32px 0 #a6aaa97a;
+  backdrop-filter: blur(0.6px);
+  /* border-radius: 10px;
+    /* border: 1px solid rgba(255, 255, 255, 0.18); */
 }
+
+.lvl {
+  font-size: 3rem;
+  font-weight: 500;
+  margin-top: 65px;
+}
+
+.pos {
+  margin-top: -15px;
+  font-size: 1.5rem;
+}
+
+.country {
+  background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Flag_of_Bangladesh.svg/320px-Flag_of_Bangladesh.svg.png);
+  background-size: cover;
+  width: 30px;
+  height: 20px;
+}
+
+.team {
+  margin-top: 10px;
+  background: url(https://upload.wikimedia.org/wikipedia/sco/5/56/Real_Madrid_CF.svg);
+  background-size: cover;
+  width: 33px;
+  height: 45px;
+}
+
+.player {
+  background-size: cover;
+  width: 180px;
+  height: 230px;
+  position: absolute;
+  top: 70px;
+  right: 40px;
+  z-index: 0;
+}
+
+.details {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-itens: center;
+  width: 260px;
+  height: 180px;
+  background: none;
+  position: absolute;
+  bottom: 90px;
+  left: 50px;
+  z-index: 5;
+}
+
+.details h2 {
+  font-size: 2rem;
+  font-weight: bolder;
+  text-shadow: 2px 2px 2px black;
+}
+
+.underline {
+  display: inline-block;
+  width: 100%;
+  border-bottom: 1px solid #24ccff;
+  background: linear-gradient(to top, #061836db, #9198e500);
+}
+
+.area_attr {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 25px;
+}
+
+.attr {
+  width: 45%;
+  height: 80px;
+  margin-top: -40px;
+}
+
+.bdr {
+  border-right: 1px solid #24ccff;
+}
+
+.attr p {
+  font-size: 1.2rem;
+  padding: 0;
+  margin: 0;
+}
+
+.controls {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+select {
+  width: 200px;
+  font-size: 1.5rem;
+  padding: 5px;
+  border-radius: 8px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#btnCard {
+  background: rgb(25, 23, 82);
+  color: white;
+  border: none;
+  padding: 13px;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#btnCard:hover {
+  background: rgb(35, 33, 116);
+}
+
+.front {
+  position: relative;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  animation: cardFrontAni 4s cubic-bezier(0.73, 0.32, 0.03, 1.05);
+  animation-fill-mode: forwards;
+}
+
 .back {
   position: absolute;
   top: 0;
@@ -196,35 +199,42 @@
 
 @keyframes cardFrontAni {
   0% {
-      transform: scale(0.7) translate(-10%, 100vh) rotateY(180deg) rotate3d(-10, -10, 1, 45deg);
- }
+    transform: scale(0.7) translate(-10%, 100vh) rotateY(180deg) rotate3d(-10, -10, 1, 45deg);
+  }
+
   50% {
-      transform: scale(1) translate(0%, 0%) rotateY(180deg) rotate3d(1, 1, 1, -10deg);
- }
+    transform: scale(1) translate(0%, 0%) rotateY(180deg) rotate3d(1, 1, 1, -10deg);
+  }
+
   60% {
-      transform: scale(1) translate(0%, 0%) rotateY(180deg) rotate3d(1, 1, 1, -10deg);
- }
+    transform: scale(1) translate(0%, 0%) rotateY(180deg) rotate3d(1, 1, 1, -10deg);
+  }
+
   100% {
-      transform: scale(1) translate(0%, 0%) rotateY(0deg) rotate3d(0, 0, 0, 0deg);
- }
-}
-@keyframes cardBackAni {
-  0% {
-      transform: scale(0.7) translate(-10%, 100vh) rotateY(0deg) rotate3d(-10, -10, 1, 45deg);
- }
-  50% {
-      transform: scale(1) translate(0%, 0%) rotateY(0deg) rotate3d(1, 1, 1, -10deg);
- }
-  60% {
-      transform: scale(1) translate(0%, 0%) rotateY(0deg) rotate3d(1, 1, 1, -10deg);
- }
-  100% {
-      transform: scale(1) translate(0%, 0%) rotateY(180deg) rotate3d(0, 0, 0, 0deg);
- }
+    transform: scale(1) translate(0%, 0%) rotateY(0deg) rotate3d(0, 0, 0, 0deg);
+  }
 }
 
-.fifalogo{
-  background: url(./../../asset/image/fifalogo.png); 
+@keyframes cardBackAni {
+  0% {
+    transform: scale(0.7) translate(-10%, 100vh) rotateY(0deg) rotate3d(-10, -10, 1, 45deg);
+  }
+
+  50% {
+    transform: scale(1) translate(0%, 0%) rotateY(0deg) rotate3d(1, 1, 1, -10deg);
+  }
+
+  60% {
+    transform: scale(1) translate(0%, 0%) rotateY(0deg) rotate3d(1, 1, 1, -10deg);
+  }
+
+  100% {
+    transform: scale(1) translate(0%, 0%) rotateY(180deg) rotate3d(0, 0, 0, 0deg);
+  }
+}
+
+.fifalogo {
+  background: url(./../../asset/image/fifalogo.png);
   background-size: cover;
   width: 220px;
   height: 250px;
@@ -232,5 +242,5 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;
+  z-index: 3;
 }
