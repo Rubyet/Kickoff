@@ -74,8 +74,8 @@ app.get('/random/:id', (req, res) => {
         assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes);
     }
     else if (req.params.id == 3) {
-        const NoOfPlayers = 3;
-        const TeamsPerPlayer = 3;
+        const NoOfPlayers = 4;
+        const TeamsPerPlayer = 2;
         const TeamIndexes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
         assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes);
