@@ -1,7 +1,7 @@
 body {
     background: url('https://fifafixture.rubyet.info/img/Background/Football-Stadium-background.jpg') no-repeat center center fixed;
     background-size: cover;
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .card {

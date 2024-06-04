@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Random from './page/Random/Random'
+import Random_Test from './page/Random/Random_Test'
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/random" element={<Random />} />
+          <Route path="/test" element={<Random_Test />} />
         </Routes>
       </BrowserRouter>
     </div>
