@@ -2,41 +2,32 @@ const db = require('../config/db-connection');
 var response = [];
 var TeamIndexes = [];
 exports.getRandomTeams = (req, res) => {
-    // db.query('SELECT * FROM fifa_teams', (err, results) => {
-    //     if (err) {
-    //         console.error('Error executing query: ' + err);
-    //         res.status(500).json({ error: 'Internal server error' });
-    //         return;
-    //     }
-    //     res.json(results);
-    // });
+    (async () => {
+        try {
+            const game = await db.query('SELECT * FROM games where id = ?', req.params.id);
 
-    
-    const NameOfPlayers = ["Person 1", "Person 2", "Person 3", "Person 4"];
-    const ImageOfPlayers = ["https://admin.kickoff.rubyet.info/public/images/players/ronaldo.png", "https://admin.kickoff.rubyet.info/images/players/messi.png", "https://admin.kickoff.rubyet.info/images/players/neimar.png", "https://admin.kickoff.rubyet.info/images/players/messi.png"];
+            const playerIdsString = game[0].players;
+            const playerIds = JSON.parse(playerIdsString);
+            const playerIdsStr = playerIds.join(',');
 
-    const TeamNames = ["Accrington Stanley", "Arsenal", "Everton F.C.", "Blackpool F.C.", "Brentford F.C.", "Sunderland A.F.C.", "Blackpool F.C.", "Brentford F.C.", "Sunderland A.F.C."];
-    const TeamLogos = ["https://fifafixture.rubyet.info/img/teams_logo/1.webp", "https://fifafixture.rubyet.info/img/teams_logo/2.webp", "https://fifafixture.rubyet.info/img/teams_logo/3.webp", "https://fifafixture.rubyet.info/img/teams_logo/4.webp", "https://fifafixture.rubyet.info/img/teams_logo/5.webp", "https://fifafixture.rubyet.info/img/teams_logo/6.webp", "https://fifafixture.rubyet.info/img/teams_logo/7.webp", "https://fifafixture.rubyet.info/img/teams_logo/8.webp", "https://fifafixture.rubyet.info/img/teams_logo/9.webp"];
-    console.log(req.params.id);
+            const players = await db.query(`SELECT * FROM players WHERE id IN (${playerIdsStr})`);
 
-    if (req.params.id == 2) {
-        const NoOfPlayers = 3;
-        const TeamsPerPlayer = 2;
-        TeamIndexes = [1, 2, 3, 4, 5, 6];
-        console.log("here");
-        assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes,NameOfPlayers,ImageOfPlayers,TeamNames,TeamLogos);
-    }
-    else if (req.params.id == 3) {
-        const NoOfPlayers = 4;
-        const TeamsPerPlayer = 2;
-        TeamIndexes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+            NoOfPlayers = game[0].no_of_players;
+            TeamsPerPlayer = game[0].no_of_teams_per_players;
 
-        assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes,NameOfPlayers,ImageOfPlayers,TeamNames,TeamLogos);
-    } else {
-        res.json(response);
-    }
-    // console.log(response);
-    res.json(response);
+            TeamIndexes = JSON.parse(game[0].teams);
+            const teamIdsStr = TeamIndexes.join(',');
+            const Teams = await db.query(`SELECT * FROM fifa_teams WHERE id IN (${teamIdsStr})`);
+
+            console.log(Teams);
+
+            assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams);
+
+            res.json(response);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    })();
 };
 
 function shuffle(array) {
@@ -47,8 +38,8 @@ function shuffle(array) {
     return array;
 }
 
-function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes,NameOfPlayers,ImageOfPlayers,TeamNames,TeamLogos) {
-    response =[];
+function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams) {
+    response = [];
     if (NoOfPlayers * TeamsPerPlayer > TeamIndexes.length) {
         throw new Error("Not enough teams for each player to have the specified number of teams.");
     }
@@ -58,8 +49,9 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes,NameOfPla
 
     for (let i = 0; i < NoOfPlayers; i++) {
         const player = {};
-        player.playerName = NameOfPlayers[i];
-        player.playerImage = ImageOfPlayers[i];
+        player.playerId = players[i].id;
+        player.playerName = players[i].name;
+        player.playerImage = players[i].image;
         player.playerLevel = 5;
         player.playerGoals = 15;
         player.playerTotalMatch = 8;
@@ -68,15 +60,86 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes,NameOfPla
             // Retrieve the team information based on randomTeams[j]
             const teamIndex = TeamIndexes[i * TeamsPerPlayer + j];
             console.log(teamIndex);
-            player.teams.push({
-                team: TeamNames[teamIndex - 1],
-                logo: TeamLogos[teamIndex - 1]
-            });
+
+            const team = Teams.find(t => t.id === teamIndex);
+
+            if (team) {
+                player.teams.push({
+                    id: team.id,
+                    team: team.name,
+                    logo: team.logo
+                });
+            } else {
+                console.error(`Team with id ${teamIndex} not found`);
+            }
         }
         response.push(player);
-        console.log(player);
     }
 }
+
+// CRUD Operations for fifa_teams
+
+// Create a new team
+exports.createTeam = (req, res) => {
+    const { name, logo } = req.body;
+    db.query('INSERT INTO fifa_teams (name, logo) VALUES (?, ?)', [name, logo])
+        .then(result => {
+            res.status(201).send(`Team created with ID: ${result.insertId}`);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        });
+};
+
+// Get a team by ID
+exports.getTeamById = (req, res) => {
+    db.query('SELECT * FROM fifa_teams WHERE id = ?', [req.params.id])
+        .then(result => {
+            if (result.length === 0) {
+                res.status(404).send('Team not found');
+            } else {
+                res.json(result[0]);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        });
+};
+
+// Update a team by ID
+exports.updateTeamById = (req, res) => {
+    const { name, logo } = req.body;
+    db.query('UPDATE fifa_teams SET name = ?, logo = ? WHERE id = ?', [name, logo, req.params.id])
+        .then(result => {
+            if (result.affectedRows === 0) {
+                res.status(404).send('Team not found');
+            } else {
+                res.send('Team updated successfully');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        });
+};
+
+// Delete a team by ID
+exports.deleteTeamById = (req, res) => {
+    db.query('DELETE FROM fifa_teams WHERE id = ?', [req.params.id])
+        .then(result => {
+            if (result.affectedRows === 0) {
+                res.status(404).send('Team not found');
+            } else {
+                res.send('Team deleted successfully');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        });
+};
 
 
 // app.get('/db', (req, res) => {
