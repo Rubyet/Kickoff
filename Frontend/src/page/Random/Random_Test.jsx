@@ -53,6 +53,10 @@ function Random_Test() {
             if (index < gameData.length) {
                 setRenderedData(prevData => [...prevData, gameData[index]]);
                 setIndex(prevIndex => prevIndex + 1);
+                let audio = new Audio('./../asset/audio/sound2.mp3');
+                audio.onloadeddata = function() {
+                    audio.play();
+                };
             } else {
                 clearInterval(interval);
             }

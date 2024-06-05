@@ -93,7 +93,7 @@
   width: 180px;
   height: 230px;
   position: absolute;
-  top: 70px;
+  top: 63px;
   right: 40px;
   z-index: 0;
 }
@@ -102,19 +102,18 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-itens: center;
   width: 260px;
   height: 180px;
   background: none;
   position: absolute;
-  bottom: 90px;
+  bottom: 100px;
   left: 50px;
   z-index: 5;
 }
 
 .details h2 {
-  font-size: 2rem;
-  font-weight: bolder;
+  font-size: 1.8rem;
+  font-weight: 500;
   text-shadow: 2px 2px 2px black;
 }
 
@@ -122,12 +121,14 @@
   display: inline-block;
   width: 100%;
   border-bottom: 1px solid #24ccff;
+  padding-bottom: 5px;
   background: linear-gradient(to top, #061836db, #9198e500);
 }
 
 .area_attr {
   display: flex;
   justify-content: center;
+  text-align: center;
   width: 100%;
   margin-top: 25px;
 }
@@ -143,7 +144,6 @@
 }
 
 .attr p {
-  font-size: 1.2rem;
   padding: 0;
   margin: 0;
 }
@@ -243,4 +243,13 @@ select {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
+}
+.teamImage{
+  margin-top: 10px;
+  width: 70px;
+  height: 70px;
+}
+.teamName{
+  font-size: 12px;
+  font-weight: 500;
 }
