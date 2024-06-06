@@ -4,10 +4,8 @@ const app = express();
 const kickoff = require('./src/routes/kickoffApiRoutes');
 const port = 3000;
 
-const os = require('os');
-
 // Get the hostname
-const hostname = os.hostname();
+const hostname = process.env.BASE_URL;
 
 // Set the public/image location
 const publicImageLocation = '/public/image';
