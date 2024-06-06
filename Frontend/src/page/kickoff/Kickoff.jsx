@@ -113,8 +113,9 @@ function Kickoff() {
 
         }
         axios.post(`${BaseURL}/games`, data).then((response) => {
+            // console.log(response)
             if (response.status == 201) {
-                navigate(`/random/${response.data.id}`)
+                navigate(`/random/${response.data.gameId}`)
             }
         })
     }

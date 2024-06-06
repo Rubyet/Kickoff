@@ -13,11 +13,15 @@ function Random() {
     const [containerSize, setContainerSize] = useState()
     const outerDiv = useRef(null);
     const { id } = useParams();
+    console.log(id)
 
     const getData = async (id) => {
         axios.get(`${BaseURL}/random/${id}`).then((response) => {
             setGameData(response.data)
-            if (response.data.length == 2) {
+            if (response.data.length == 1) {
+                setBlockSize(12)
+                setContainerSize("container")
+            } else if (response.data.length == 2) {
                 setBlockSize(6)
                 setContainerSize("container")
             } else if (response.data.length == 3) {
