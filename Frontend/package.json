@@ -10,6 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/base": "^5.0.0-beta.40",
+    "@mui/material": "^5.15.19",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "aos": "^2.3.4",
     "axios": "^1.7.2",
     "localforage": "^1.10.0",
@@ -17,7 +22,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
-    "sort-by": "^0.0.2"
+    "react-select": "^5.8.0",
+    "sort-by": "^0.0.2",
+    "styled-components": "^6.1.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

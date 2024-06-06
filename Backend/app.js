@@ -1,6 +1,9 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const app = express();
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 const kickoff = require('./src/routes/kickoffApiRoutes');
 const port = 3000;
 
@@ -17,6 +20,7 @@ global.logoLocation = hostname + publicImageLocation + '/logos/'
 global.playersLocation = hostname + publicImageLocation + '/players/'
 
 app.use(cors());
+app.use(express.json());
 
 app.get('/', (req,res) => {
     res.send("Backend working just perfect!!! Enjoy!!");
