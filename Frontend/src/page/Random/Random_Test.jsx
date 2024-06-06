@@ -13,7 +13,7 @@ function Random_Test() {
     const outerDiv = useRef(null);
 
     const getData = async () => {
-        axios.get(`${BaseURL}/random/2`).then((response) => {
+        axios.get(`${BaseURL}/random`).then((response) => {
             setGameData(response.data)
             if (response.data.length == 2) {
                 setBlockSize(6)
