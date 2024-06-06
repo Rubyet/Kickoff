@@ -8,7 +8,7 @@ const port = 3000;
 const hostname = process.env.BASE_URL;
 
 // Set the public/image location
-const publicImageLocation = '/public/image';
+const publicImageLocation = '/public/images';
 
 // Store them in global variables
 global.hostname = hostname;
