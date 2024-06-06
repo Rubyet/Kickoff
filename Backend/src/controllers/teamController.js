@@ -141,6 +141,18 @@ exports.deleteTeamById = (req, res) => {
         });
 };
 
+// Get all teams
+exports.getAllTeams = (req, res) => {
+    db.query('SELECT * FROM fifa_teams')
+        .then(result => {
+            res.json(result);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        });
+};
+
 
 // app.get('/db', (req, res) => {
 

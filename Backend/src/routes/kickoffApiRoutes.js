@@ -18,6 +18,7 @@ router.post('/teams', teamsController.createTeam);
 router.get('/teams/:id', teamsController.getTeamById);
 router.put('/teams/:id', teamsController.updateTeamById);
 router.delete('/teams/:id', teamsController.deleteTeamById);
+router.get('/teams', teamsController.getAllTeams);
 
 // CRUD routes for players
 router.post('/players', playersController.createPlayer);
