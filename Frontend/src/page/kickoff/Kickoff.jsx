@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField';
 import style from './kickoff.module.css'
 import { MenuItem, NativeSelect, Select } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Kickoff() {
     const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -18,6 +19,7 @@ function Kickoff() {
     const [matchType, setMatchType] = useState('')
     const [matchTypeName, setMatchTypeName] = useState('')
     const [fixture, setFixture] = useState('')
+    const navigate = useNavigate();
 
     const getAllData = async () => {
         //Get Players List
@@ -111,9 +113,10 @@ function Kickoff() {
 
         }
         axios.post(`${BaseURL}/games`, data).then((response) => {
-            console.log(response.data)
-        }
-        )
+            if (response.status == 201) {
+                navigate(`/random/${response.data.id}`)
+            }
+        })
     }
 
 

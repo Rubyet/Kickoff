@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/random" element={<Random />} />
+          <Route path="/random/:id" element={<Random />} />
           <Route path="/test" element={<Random_Test />} />
           <Route path="/kickoff" element={<Kickoff />} />
         </Routes>

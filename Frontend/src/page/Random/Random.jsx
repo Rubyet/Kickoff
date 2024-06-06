@@ -2,6 +2,7 @@
 import PlayerCard from '../../component/PlayerCard'
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
+import { useParams } from 'react-router-dom';
 
 function Random() {
     const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -11,9 +12,10 @@ function Random() {
     const [blockSize, setBlockSize] = useState()
     const [containerSize, setContainerSize] = useState()
     const outerDiv = useRef(null);
+    const { id } = useParams();
 
-    const getData = async () => {
-        axios.get(`${BaseURL}/random/1`).then((response) => {
+    const getData = async (id) => {
+        axios.get(`${BaseURL}/random/${id}`).then((response) => {
             setGameData(response.data)
             if (response.data.length == 2) {
                 setBlockSize(6)
@@ -32,7 +34,7 @@ function Random() {
         )
     }
     useEffect(() => {
-        getData()
+        getData(id)
     }, []);
 
     const [loading, setLoading] = useState(true);
