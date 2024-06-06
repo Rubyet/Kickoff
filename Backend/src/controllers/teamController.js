@@ -51,7 +51,7 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
         const player = {};
         player.playerId = players[i].id;
         player.playerName = players[i].name;
-        player.playerImage = players[i].image;
+        player.playerImage = "./public/images/logos/"+players[i].image;
         player.playerLevel = 5;
         player.playerGoals = 15;
         player.playerTotalMatch = 8;
@@ -67,7 +67,7 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
                 player.teams.push({
                     id: team.id,
                     team: team.name,
-                    logo: team.logo
+                    logo: "./public/images/logos/"+team.logo
                 });
             } else {
                 console.error(`Team with id ${teamIndex} not found`);
