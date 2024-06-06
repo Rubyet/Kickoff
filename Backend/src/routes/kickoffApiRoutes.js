@@ -32,5 +32,11 @@ router.get('/games/:id', gameController.getGameById);
 router.put('/games/:id', gameController.updateGameById);
 router.delete('/games/:id', gameController.deleteGameById);
 router.get('/games', gameController.getAllGames);
+//match type
+router.get('/match-type', gameController.getAllMatchTypes);
+router.get('/match-type/:id', gameController.getMatchTypeById);
+//fixture type
+router.get('/fixture-type', gameController.getAllFixtureTypes);
+router.get('/fixture-type/:id', gameController.getFixtureTypeById);
 
 module.exports = router;
