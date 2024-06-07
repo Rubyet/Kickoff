@@ -5,6 +5,8 @@ import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Random from './page/Random/Random'
 import Random_Test from './page/Random/Random_Test'
+import Home from './page/Home'
+import Kickoff from './page/kickoff/Kickoff'
 
 function App() {
 
@@ -13,8 +15,10 @@ function App() {
     <div className="">
       <BrowserRouter>
         <Routes>
-          <Route path="/random" element={<Random />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/random/:id" element={<Random />} />
           <Route path="/test" element={<Random_Test />} />
+          <Route path="/kickoff" element={<Kickoff />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -51,7 +51,7 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
         const player = {};
         player.playerId = players[i].id;
         player.playerName = players[i].name;
-        player.playerImage = players[i].image;
+        player.playerImage = global.playersLocation + players[i].image;
         player.playerLevel = 5;
         player.playerGoals = 15;
         player.playerTotalMatch = 8;
@@ -67,7 +67,7 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
                 player.teams.push({
                     id: team.id,
                     team: team.name,
-                    logo: team.logo
+                    logo: global.logoLocation + team.logo
                 });
             } else {
                 console.error(`Team with id ${teamIndex} not found`);
@@ -134,6 +134,18 @@ exports.deleteTeamById = (req, res) => {
             } else {
                 res.send('Team deleted successfully');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            res.status(500).send('Internal Server Error');
+        });
+};
+
+// Get all teams
+exports.getAllTeams = (req, res) => {
+    db.query('SELECT * FROM fifa_teams')
+        .then(result => {
+            res.json(result);
         })
         .catch(error => {
             console.error('Error:', error);
