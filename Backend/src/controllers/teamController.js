@@ -10,14 +10,25 @@ exports.getRandomTeams = (req, res) => {
             const playerIds = JSON.parse(playerIdsString);
             const playerIdsStr = playerIds.join(',');
 
-            const players = await db.query(`SELECT * FROM players WHERE id IN (${playerIdsStr})`);
+            const players = await db.query(
+                `SELECT 
+                    *, 
+                    CONCAT(?, image) AS image, 
+                    CASE 
+                        WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
+                        ELSE '' 
+                    END AS avatar 
+                 FROM players 
+                 WHERE id IN (${playerIdsStr})`,
+                [global.playersLocation, global.playersLocation]
+            );
 
             NoOfPlayers = game[0].no_of_players;
             TeamsPerPlayer = game[0].no_of_teams_per_players;
 
             TeamIndexes = JSON.parse(game[0].teams);
             const teamIdsStr = TeamIndexes.join(',');
-            const Teams = await db.query(`SELECT * FROM fifa_teams WHERE id IN (${teamIdsStr})`);
+            const Teams = await db.query(`SELECT *, CONCAT(?, logo) AS logo FROM fifa_teams WHERE id IN (${teamIdsStr})`, [global.logoLocation]);
 
             console.log(Teams);
 
@@ -51,24 +62,24 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
         const player = {};
         player.playerId = players[i].id;
         player.playerName = players[i].name;
-        player.playerImage = global.playersLocation + players[i].image;
+        player.playerImage = players[i].image;
+        player.playerAvatar = players[i].avatar;
         player.playerLevel = 5;
         player.playerGoals = 15;
         player.playerTotalMatch = 8;
+        player.playerTotalWin = 5;
+        player.playerTotalLose = 3;
+        player.playerTotalDraw = 2;
         player.teams = [];
         for (let j = 0; j < TeamsPerPlayer; j++) {
             // Retrieve the team information based on randomTeams[j]
             const teamIndex = TeamIndexes[i * TeamsPerPlayer + j];
-            console.log(teamIndex);
 
             const team = Teams.find(t => t.id === teamIndex);
 
+            console.log(team);
             if (team) {
-                player.teams.push({
-                    id: team.id,
-                    team: team.name,
-                    logo: global.logoLocation + team.logo
-                });
+                player.teams.push(team);
             } else {
                 console.error(`Team with id ${teamIndex} not found`);
             }
@@ -94,7 +105,7 @@ exports.createTeam = (req, res) => {
 
 // Get a team by ID
 exports.getTeamById = (req, res) => {
-    db.query('SELECT * FROM fifa_teams WHERE id = ?', [req.params.id])
+    db.query('SELECT *, CONCAT(?, logo) AS logo FROM fifa_teams WHERE id = ?', [global.logoLocation, req.params.id])
         .then(result => {
             if (result.length === 0) {
                 res.status(404).send('Team not found');
@@ -143,7 +154,7 @@ exports.deleteTeamById = (req, res) => {
 
 // Get all teams
 exports.getAllTeams = (req, res) => {
-    db.query('SELECT * FROM fifa_teams')
+    db.query('SELECT * , CONCAT(?, logo) AS logo FROM fifa_teams', [global.logoLocation])
         .then(result => {
             res.json(result);
         })
