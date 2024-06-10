@@ -1,10 +1,10 @@
 const db = require('../config/db-connection');
 
-exports.getAllMatches = (req, res) => {
+exports.getAllFixtures = (req, res) => {
     (async () => {
         try {
-            const matches = await db.query('SELECT * FROM matches');
-            res.json(matches);
+            const fixtures = await db.query('SELECT * FROM fixtures');
+            res.json(fixtures);
         } catch (error) {
             console.error('Error:', error);
             res.status(500).send('Internal Server Error');
@@ -15,7 +15,7 @@ exports.getAllMatches = (req, res) => {
 exports.getMatchById = (req, res) => {
     (async () => {
         try {
-            const match = await db.query('SELECT * FROM matches WHERE id = ?', [req.params.id]);
+            const match = await db.query('SELECT * FROM fixtures WHERE id = ?', [req.params.id]);
             if (match.length > 0) {
                 res.json(match[0]);
             } else {
@@ -47,7 +47,7 @@ exports.createMatch = (req, res) => {
                 others_matches: req.body.others_matches
             };
 
-            const result = await db.query('INSERT INTO matches SET ?', newMatch);
+            const result = await db.query('INSERT INTO fixtures SET ?', newMatch);
             res.status(201).json({ id: result.insertId, ...newMatch });
         } catch (error) {
             console.error('Error:', error);
@@ -75,7 +75,7 @@ exports.updateMatch = (req, res) => {
                 others_matches: req.body.others_matches
             };
 
-            const result = await db.query('UPDATE matches SET ? WHERE id = ?', [updatedMatch, req.params.id]);
+            const result = await db.query('UPDATE fixtures SET ? WHERE id = ?', [updatedMatch, req.params.id]);
             if (result.affectedRows > 0) {
                 res.json({ id: req.params.id, ...updatedMatch });
             } else {
@@ -91,7 +91,7 @@ exports.updateMatch = (req, res) => {
 exports.deleteMatch = (req, res) => {
     (async () => {
         try {
-            const result = await db.query('DELETE FROM matches WHERE id = ?', [req.params.id]);
+            const result = await db.query('DELETE FROM fixtures WHERE id = ?', [req.params.id]);
             if (result.affectedRows > 0) {
                 res.send('Match deleted');
             } else {
@@ -112,7 +112,7 @@ exports.createSimpleMatch = (req, res) => {
                 player_team_combination: JSON.stringify(req.body.player_team_combination)
             };
 
-            const result = await db.query('INSERT INTO matches SET ?', newMatch);
+            const result = await db.query('INSERT INTO fixtures SET ?', newMatch);
             res.status(201).json({ id: result.insertId, ...newMatch });
         } catch (error) {
             console.error('Error:', error);
@@ -124,7 +124,7 @@ exports.createSimpleMatch = (req, res) => {
 
 // Function to generate match combinations
 function generateMatchCombinations(playerTeamCombination) {
-    const matches = [];
+    const fixtures = [];
     const totalTeams = playerTeamCombination.reduce((acc, player) => acc + player.teams.length, 0);
     const teamPool = [];
 
@@ -139,7 +139,7 @@ function generateMatchCombinations(playerTeamCombination) {
     for (let i = 0; i < totalTeams; i++) {
         for (let j = i + 1; j < totalTeams; j++) {
             if (teamPool[i].playerId !== teamPool[j].playerId) {
-                matches.push({
+                fixtures.push({
                     match_details: [
                         {
                             id: teamPool[i].id,
@@ -170,14 +170,14 @@ function generateMatchCombinations(playerTeamCombination) {
         }
     }
 
-    return matches;
+    return fixtures;
 }
 
-exports.getLeagueMatches = (req, res) => {
+exports.getLeagueFixtures = (req, res) => {
     (async () => {
         try {
             const matchId = req.params.id;
-            const match = await db.query('SELECT * FROM matches WHERE id = ?', [matchId]);
+            const match = await db.query('SELECT * FROM fixtures WHERE id = ?', [matchId]);
 
             if (match.length === 0) {
                 return res.status(404).json({ error: 'Match not found' });
