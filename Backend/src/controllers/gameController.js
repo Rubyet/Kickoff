@@ -3,8 +3,8 @@ const db = require('../config/db-connection');
 // Create a new game
 exports.createGame = (req, res) => {
     // console.log(req);
-    const { no_of_players, no_of_teams_per_players, players, teams, match_type, fixture_type } = req.body;
-    db.query('INSERT INTO games (no_of_players, no_of_teams_per_players, players, teams, match_type, fixture_type) VALUES (?, ?, ?, ?,?,?)', [no_of_players, no_of_teams_per_players, players, teams, match_type, fixture_type])
+    const { no_of_players, no_of_teams_per_players, players, teams, match_type, fixture_type, random } = req.body;
+    db.query('INSERT INTO games (no_of_players, no_of_teams_per_players, players, teams, match_type, fixture_type, random) VALUES (?, ?, ?, ?, ?, ?, ?)', [no_of_players, no_of_teams_per_players, players, teams, match_type, fixture_type, random])
         .then(result => {
             const createResponse = {
                 gameId: result.insertId

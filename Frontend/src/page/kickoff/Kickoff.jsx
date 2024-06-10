@@ -16,9 +16,9 @@ function Kickoff() {
   const [fixtureData, setFixtureData] = useState([]);
   const [playerName, setPlayerName] = useState([]);
   const [teamName, setTeamName] = useState([]);
-  const [matchType, setMatchType] = useState("");
+  const [matchType, setMatchType] = useState(null);
   const [matchTypeName, setMatchTypeName] = useState("");
-  const [fixture, setFixture] = useState("");
+  const [fixture, setFixture] = useState(null);
   const navigate = useNavigate();
 
   const getAllData = async () => {
@@ -110,6 +110,7 @@ function Kickoff() {
       teams: JSON.stringify(teamName),
       match_type: matchType,
       fixture_type: fixture,
+      random: 1,
     };
     axios.post(`${BaseURL}/games`, data).then((response) => {
       // console.log(response)

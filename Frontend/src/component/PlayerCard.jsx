@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import style from './playerCard.module.css'
 
 function PlayerCard(props) {
+    const BaseURL = import.meta.env.VITE_API_BASE_URL;
     console.log(props)
-    const [bgImage, setBgImage] = useState('https://i.imgur.com/tUk5SC0.png');
+    const [bgImage, setBgImage] = useState('../../public/asset/image/card_bg.png');
 
     useEffect(() => {
     }, [])
@@ -25,7 +26,7 @@ function PlayerCard(props) {
                         {props?.data?.teams?.map((team, index) => (
                             <div className={`${style.attr}`} key={index}>
                                 <img src={team?.logo} className={`${style.teamImage}`} />
-                                <p className={style.teamName}>{team?.team}</p>
+                                <p className={style.teamName}>{team?.name}</p>
                             </div>
                         ))}
                     </div>

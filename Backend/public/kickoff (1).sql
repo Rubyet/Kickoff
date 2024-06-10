@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 05, 2024 at 07:56 PM
+-- Generation Time: Jun 09, 2024 at 08:08 PM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -29,14 +29,14 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `fifa_teams` (
   `id` int(11) NOT NULL,
-  `name` varchar(255) DEFAULT NULL,
-  `league` varchar(255) DEFAULT NULL,
-  `logo` varchar(255) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `league` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `logo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `ova` int(11) DEFAULT NULL,
   `att` int(11) DEFAULT NULL,
   `mid` int(11) DEFAULT NULL,
   `def` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `fifa_teams`
@@ -726,6 +726,25 @@ INSERT INTO `fifa_teams` (`id`, `name`, `league`, `logo`, `ova`, `att`, `mid`, `
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `fixture_type`
+--
+
+CREATE TABLE `fixture_type` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `fixture_type`
+--
+
+INSERT INTO `fixture_type` (`id`, `name`) VALUES
+(1, 'Single'),
+(2, 'Home and Away');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `games`
 --
 
@@ -733,18 +752,78 @@ CREATE TABLE `games` (
   `id` int(11) NOT NULL,
   `no_of_players` int(11) NOT NULL,
   `no_of_teams_per_players` int(11) NOT NULL,
-  `players` text NOT NULL,
-  `teams` text NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `players` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `teams` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `match_type` int(11) DEFAULT NULL,
+  `fixture_type` int(11) DEFAULT NULL,
+  `random` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `games`
 --
 
-INSERT INTO `games` (`id`, `no_of_players`, `no_of_teams_per_players`, `players`, `teams`, `created_at`, `updated_at`) VALUES
-(1, 3, 2, '[1,2,3]', '[25,11,31,45,53,66]', '2024-06-05 21:10:09', '2024-06-05 21:10:09');
+INSERT INTO `games` (`id`, `no_of_players`, `no_of_teams_per_players`, `players`, `teams`, `match_type`, `fixture_type`, `random`, `created_at`, `updated_at`) VALUES
+(14, 4, 1, '[1,2,3,4]', '[11,22,33,44]', 1, 1, 0, '2024-06-07 21:07:59', '2024-06-07 21:07:59'),
+(15, 4, 2, '[1,2,3,4]', '[11,22,33,44,111,222,333,444]', 1, 1, 0, '2024-06-07 21:50:33', '2024-06-07 21:50:33');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `matches`
+--
+
+CREATE TABLE `matches` (
+  `id` int(11) NOT NULL,
+  `game` int(11) NOT NULL,
+  `player_team_combination` longtext DEFAULT NULL,
+  `league_is_compelete` tinyint(4) DEFAULT NULL,
+  `league_matches` longtext DEFAULT NULL,
+  `knockout_is_compelete` tinyint(4) DEFAULT NULL,
+  `knockout_matches` longtext DEFAULT NULL,
+  `final_is_complete` tinyint(4) DEFAULT NULL,
+  `final_matches` longtext DEFAULT NULL,
+  `friendly_is_complete` tinyint(4) DEFAULT NULL,
+  `friendly_matches` longtext DEFAULT NULL,
+  `others_is_complete` tinyint(4) DEFAULT NULL,
+  `others_type` varchar(100) DEFAULT NULL,
+  `others_matches` longtext DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `matches`
+--
+
+INSERT INTO `matches` (`id`, `game`, `player_team_combination`, `league_is_compelete`, `league_matches`, `knockout_is_compelete`, `knockout_matches`, `final_is_complete`, `final_matches`, `friendly_is_complete`, `friendly_matches`, `others_is_complete`, `others_type`, `others_matches`, `created_at`, `updated_at`) VALUES
+(2, 15, '[\r\n{\r\n\"playerId\": 1,\r\n\"playerName\": \"L. Messi\",\r\n\"playerImage\": \"http://localhost:3000/public/images/players/messi.png\",\r\n\"playerAvatar\": \"\",\r\n\"playerLevel\": 5,\r\n\"playerGoals\": 15,\r\n\"playerTotalMatch\": 8,\r\n\"playerTotalWin\": 5,\r\n\"playerTotalLose\": 3,\r\n\"playerTotalDraw\": 2,\r\n\"teams\": [\r\n{\r\n\"id\": 11,\r\n\"name\": \"Newcastle United\",\r\n\"league\": \"English Premier League\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/newcastle-united-300x300.png\",\r\n\"ova\": 81,\r\n\"att\": 79,\r\n\"mid\": 81,\r\n\"def\": 82\r\n},\r\n{\r\n\"id\": 33,\r\n\"name\": \"Olympique de Marseille\",\r\n\"league\": \"French Ligue 1\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/olympique-de-marseille-300x300.png\",\r\n\"ova\": 78,\r\n\"att\": 77,\r\n\"mid\": 78,\r\n\"def\": 78\r\n}\r\n]\r\n},\r\n{\r\n\"playerId\": 2,\r\n\"playerName\": \"Neimar JR\",\r\n\"playerImage\": \"http://localhost:3000/public/images/players/neimar.png\",\r\n\"playerAvatar\": \"\",\r\n\"playerLevel\": 5,\r\n\"playerGoals\": 15,\r\n\"playerTotalMatch\": 8,\r\n\"playerTotalWin\": 5,\r\n\"playerTotalLose\": 3,\r\n\"playerTotalDraw\": 2,\r\n\"teams\": [\r\n{\r\n\"id\": 333,\r\n\"name\": \"KV Mechelen\",\r\n\"league\": \"Belgian Pro League\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/mechelen-300x300.png\",\r\n\"ova\": 68,\r\n\"att\": 67,\r\n\"mid\": 69,\r\n\"def\": 68\r\n},\r\n{\r\n\"id\": 444,\r\n\"name\": \"Deportivo Táchira FC\",\r\n\"league\": \"Venezuelan Primera División\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/deportivo-tachira-300x300.png\",\r\n\"ova\": 66,\r\n\"att\": 67,\r\n\"mid\": 66,\r\n\"def\": 66\r\n}\r\n]\r\n},\r\n{\r\n\"playerId\": 3,\r\n\"playerName\": \"C. Ronaldo\",\r\n\"playerImage\": \"http://localhost:3000/public/images/players/ronaldo.png\",\r\n\"playerAvatar\": \"\",\r\n\"playerLevel\": 5,\r\n\"playerGoals\": 15,\r\n\"playerTotalMatch\": 8,\r\n\"playerTotalWin\": 5,\r\n\"playerTotalLose\": 3,\r\n\"playerTotalDraw\": 2,\r\n\"teams\": [\r\n{\r\n\"id\": 44,\r\n\"name\": \"Al Ittihad\",\r\n\"league\": \"Saudi Professional League\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/al-ittihad-300x300.png\",\r\n\"ova\": 77,\r\n\"att\": 83,\r\n\"mid\": 79,\r\n\"def\": 70\r\n},\r\n{\r\n\"id\": 222,\r\n\"name\": \"LA Galaxy\",\r\n\"league\": \"USA Major League Soccer\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/la-galaxy-300x300.png\",\r\n\"ova\": 70,\r\n\"att\": 70,\r\n\"mid\": 69,\r\n\"def\": 68\r\n}\r\n]\r\n},\r\n{\r\n\"playerId\": 4,\r\n\"playerName\": \"K. Mbappe\",\r\n\"playerImage\": \"http://localhost:3000/public/images/players/mbappe.png\",\r\n\"playerAvatar\": \"http://localhost:3000/public/images/players/mbappe_avatar.png\",\r\n\"playerLevel\": 5,\r\n\"playerGoals\": 15,\r\n\"playerTotalMatch\": 8,\r\n\"playerTotalWin\": 5,\r\n\"playerTotalLose\": 3,\r\n\"playerTotalDraw\": 2,\r\n\"teams\": [\r\n{\r\n\"id\": 111,\r\n\"name\": \"US Salernitana 1919\",\r\n\"league\": \"Italian Serie A\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/salernitana-300x300.png\",\r\n\"ova\": 73,\r\n\"att\": 74,\r\n\"mid\": 73,\r\n\"def\": 71\r\n},\r\n{\r\n\"id\": 22,\r\n\"name\": \"Roma\",\r\n\"league\": \"Italian Serie A\",\r\n\"logo\": \"http://localhost:3000/public/images/logos/roma-300x300.png\",\r\n\"ova\": 80,\r\n\"att\": 82,\r\n\"mid\": 78,\r\n\"def\": 81\r\n}\r\n]\r\n}\r\n]', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-06-07 23:03:47', '2024-06-07 23:03:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `match_type`
+--
+
+CREATE TABLE `match_type` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `match_type`
+--
+
+INSERT INTO `match_type` (`id`, `name`) VALUES
+(1, 'League'),
+(2, 'League + Knockout'),
+(3, 'League + Knockout + Final'),
+(4, 'Knockout'),
+(5, 'Knockout + Final'),
+(6, 'Friendly'),
+(7, '1V1 8 Match Format');
 
 -- --------------------------------------------------------
 
@@ -754,10 +833,10 @@ INSERT INTO `games` (`id`, `no_of_players`, `no_of_teams_per_players`, `players`
 
 CREATE TABLE `players` (
   `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `image` varchar(100) DEFAULT NULL,
-  `avatar` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `image` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `avatar` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `players`
@@ -766,7 +845,8 @@ CREATE TABLE `players` (
 INSERT INTO `players` (`id`, `name`, `image`, `avatar`) VALUES
 (1, 'L. Messi', 'messi.png', ''),
 (2, 'Neimar JR', 'neimar.png', ''),
-(3, 'C. Ronaldo', 'ronaldo.png', NULL);
+(3, 'C. Ronaldo', 'ronaldo.png', NULL),
+(4, 'K. Mbappe', 'mbappe.png', 'mbappe_avatar.png');
 
 --
 -- Indexes for dumped tables
@@ -779,9 +859,30 @@ ALTER TABLE `fifa_teams`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `fixture_type`
+--
+ALTER TABLE `fixture_type`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `games`
 --
 ALTER TABLE `games`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `forignkey` (`match_type`),
+  ADD KEY `fixture_type` (`fixture_type`);
+
+--
+-- Indexes for table `matches`
+--
+ALTER TABLE `matches`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `game` (`game`);
+
+--
+-- Indexes for table `match_type`
+--
+ALTER TABLE `match_type`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -801,16 +902,51 @@ ALTER TABLE `fifa_teams`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=679;
 
 --
+-- AUTO_INCREMENT for table `fixture_type`
+--
+ALTER TABLE `fixture_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `games`
 --
 ALTER TABLE `games`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `matches`
+--
+ALTER TABLE `matches`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `match_type`
+--
+ALTER TABLE `match_type`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `players`
 --
 ALTER TABLE `players`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `games`
+--
+ALTER TABLE `games`
+  ADD CONSTRAINT `forignkey` FOREIGN KEY (`match_type`) REFERENCES `match_type` (`id`),
+  ADD CONSTRAINT `games_ibfk_1` FOREIGN KEY (`fixture_type`) REFERENCES `fixture_type` (`id`);
+
+--
+-- Constraints for table `matches`
+--
+ALTER TABLE `matches`
+  ADD CONSTRAINT `matches_ibfk_1` FOREIGN KEY (`game`) REFERENCES `games` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
