@@ -30,8 +30,6 @@ exports.getRandomTeams = (req, res) => {
             const teamIdsStr = TeamIndexes.join(',');
             const Teams = await db.query(`SELECT *, CONCAT(?, logo) AS logo FROM fifa_teams WHERE id IN (${teamIdsStr})`, [global.logoLocation]);
 
-            console.log(Teams);
-
             assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams);
 
             res.json(response);
@@ -56,7 +54,6 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
     }
 
     shuffle(TeamIndexes);
-    console.log(TeamIndexes);
 
     for (let i = 0; i < NoOfPlayers; i++) {
         const player = {};
@@ -76,8 +73,6 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
             const teamIndex = TeamIndexes[i * TeamsPerPlayer + j];
 
             const team = Teams.find(t => t.id === teamIndex);
-
-            console.log(team);
             if (team) {
                 player.teams.push(team);
             } else {
