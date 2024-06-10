@@ -16,9 +16,9 @@ function Kickoff() {
     const [fixtureData, setFixtureData] = useState([])
     const [playerName, setPlayerName] = useState([])
     const [teamName, setTeamName] = useState([])
-    const [matchType, setMatchType] = useState('')
+    const [matchType, setMatchType] = useState(null)
     const [matchTypeName, setMatchTypeName] = useState('')
-    const [fixture, setFixture] = useState('')
+    const [fixture, setFixture] = useState(null)
     const navigate = useNavigate();
 
     const getAllData = async () => {
@@ -52,7 +52,7 @@ function Kickoff() {
             setTeamName([]);
             setMatchType('');
             setMatchTypeName('');
-            setFixture('');
+            setFixture(null);
             setPlayerName([]);
         } else {
             setNumberOfPlayers(0);
@@ -109,7 +109,8 @@ function Kickoff() {
             players: JSON.stringify(playerName),
             teams: JSON.stringify(teamName),
             match_type: matchType,
-            fixture_type: fixture
+            fixture_type: fixture,
+            random: 1
 
         }
         axios.post(`${BaseURL}/games`, data).then((response) => {
@@ -251,7 +252,7 @@ function Kickoff() {
                                         <Select
                                             labelId="demo-simple-select-filled-label"
                                             id="demo-simple-select-filled"
-                                            defaultValue=""
+                                            defaultValue={fixture}
                                             style={{ width: '100%' }}
                                             onChange={(e) => setFixture(e.target.value)}
                                         >

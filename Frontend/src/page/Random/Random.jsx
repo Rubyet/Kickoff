@@ -70,6 +70,20 @@ function Random() {
         return () => clearInterval(interval);
     }, [gameData, index]);
 
+    const handleSubmitData = (e) => {
+        e.preventDefault()
+        const data = {
+            gameId : id,
+            player_team_combination : gameData
+        };
+        axios.post(`${BaseURL}/matches/simple`, data).then((response) => {
+            console.log(response)
+            // if (response.status == 201) {
+            //     navigate(`/random/${response.data.gameId}`)
+            // }
+        })
+    }
+
     return (
         <div>
             <div className={containerSize} ref={outerDiv}>
@@ -89,7 +103,7 @@ function Random() {
                             ))}
                         </div>
                         <div className="text-center">
-                            <button className="btn btn-primary next-buttons mt-5 w-25 btnhidden">Next</button>
+                            <button className="btn btn-primary next-buttons mt-5 w-25 btnhidden"  onClick={handleSubmitData}>Next</button>
                         </div>
                     </div>
                 )}
