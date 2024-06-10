@@ -1,0 +1,42 @@
+.fixtureBg{
+    background-image: linear-gradient(#14141479, #14141479), url(./../../../asset/image/bg/bg-4.jpg) !important;
+    background-size: cover;
+    background-position: fixed;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+.card{
+    background-color: #ffffffda;
+    color: rgb(255, 255, 255);
+    /* border: 1px solid #14141479; */
+    /* border-radius: 10px; */
+    margin: 10px;
+    /* padding: 10px; */
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+.cardHeader{
+    background-color: #ff0000;
+    /* border-radius: 10px; */
+    padding: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+.cardHeaderText{
+    color: rgb(255, 255, 255);
+}
+.teamImage{
+    width: 100px;
+    height: 100px;
+}
+.teamName{
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+
