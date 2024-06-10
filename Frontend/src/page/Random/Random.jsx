@@ -3,6 +3,7 @@ import PlayerCard from '../../component/PlayerCard'
 import axios from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom';
+import './random.css'
 
 function Random() {
     const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -71,7 +72,7 @@ function Random() {
     }, [gameData, index]);
 
     return (
-        <div>
+        <div className="randombg">
             <div className={containerSize} ref={outerDiv}>
                 {loading ? (
                     <div className='d-flex justify-content-center min-vh-100 flex-column'>
