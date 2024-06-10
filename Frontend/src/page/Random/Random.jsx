@@ -76,7 +76,7 @@ function Random() {
       gameId: id,
       player_team_combination: gameData,
     };
-    axios.post(`${BaseURL}/matches/simple`, data).then((response) => {
+    axios.post(`${BaseURL}/fixtures/simple`, data).then((response) => {
       console.log(response);
       // if (response.status == 201) {
       //     navigate(`/random/${response.data.gameId}`)
