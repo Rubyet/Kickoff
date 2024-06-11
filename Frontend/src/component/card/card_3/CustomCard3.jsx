@@ -3,13 +3,13 @@ import styled from "./card.module.css";
 import { TextField } from "@mui/material";
 import axios from "axios";
 
-function CustomCard3({ data }) {
+function CustomCard3({ data, onEvent }) {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
   const [teamHomeGoal, setTeamHomeGoal] = useState(0);
   const [teamAwayGoal, setTeamAwayGoal] = useState(0);
   const [matchId, setMatchId] = useState(null);
 
-  const handleMatchResult = async() => {
+  const handleMatchResult = async () => {
     const matchdata = {
       team_home_goal: teamHomeGoal,
       team_away_goal: teamAwayGoal,
@@ -17,9 +17,12 @@ function CustomCard3({ data }) {
     };
 
     axios.put(`${BaseURL}/matches/${matchId}`, matchdata).then((response) => {
-      console.log(response);
+      onEvent(response.data);
+      if (response.status == 200) {
+        setTeamAwayGoal(0);
+        setTeamHomeGoal(0);
+      }
     });
-
   };
 
   useEffect(() => {
@@ -153,9 +156,13 @@ function CustomCard3({ data }) {
                 </div>
               </div>
             </div>
-            <div className="d-flex justify-content-around mt-4 pb-4">
-              <button className="btn btn-primary" onClick={handleMatchResult}>Submit</button>
-            </div>
+            {data?.is_complete == 0 && (
+              <div className="d-flex justify-content-around mt-4 pb-4">
+                <button className="btn btn-primary" onClick={handleMatchResult}>
+                  Update Result
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
