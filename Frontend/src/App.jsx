@@ -7,6 +7,8 @@ import Random from './page/Random/Random'
 import Random_Test from './page/Random/Random_Test'
 import Home from './page/Home'
 import Kickoff from './page/kickoff/Kickoff'
+import Test from './page/Test'
+import Fixtures from './page/fixtures/Fixtures'
 
 function App() {
 
@@ -19,6 +21,9 @@ function App() {
           <Route path="/random/:id" element={<Random />} />
           <Route path="/test" element={<Random_Test />} />
           <Route path="/kickoff" element={<Kickoff />} />
+          <Route path="/fixtures" element={<Fixtures />} />
+          <Route path="/test1" element={<Test />} />
+
         </Routes>
       </BrowserRouter>
     </div>

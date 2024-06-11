@@ -32,6 +32,7 @@ function Home() {
       </div> */}
 
 
+      <div className={`${style.homepageBg}`}>
       <div className="container">
         <div>
           <div id={style.upper}>
@@ -83,6 +84,7 @@ function Home() {
           </section>
 
         </div>
+      </div>
       </div>
     </>
   )
