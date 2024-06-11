@@ -77,6 +77,7 @@ function Random() {
       player_team_combination: gameData,
     };
     axios.post(`${BaseURL}/fixtures/simple`, data).then((response) => {
+      console.log(response);
       // if (response.status == 201) {
       //     navigate(`/random/${response.data.gameId}`)
       // }
@@ -104,7 +105,7 @@ function Random() {
             </div>
             <div className="text-center">
               <button
-                className="btn btn-primary next-buttons mt-5 w-25 btnhidden"
+                className="btn btn-primary next-buttons mt-5 w-25"
                 onClick={handleSubmitData}
               >
                 Next

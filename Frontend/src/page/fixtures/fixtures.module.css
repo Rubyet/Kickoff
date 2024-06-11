@@ -38,5 +38,17 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.middleBlock{
+    height: 90vh;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+/* Hide scrollbar */
+.middleBlock::-webkit-scrollbar {
+    display: none;
+}
 
-
+.middleBlock {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}

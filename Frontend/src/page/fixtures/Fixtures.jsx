@@ -1,20 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import style from "./fixtures.module.css";
-import CustomCard from "../../component/card/card_1/CustomCard";
+
 import CustomCard2 from "../../component/card/card_2/CustomCard";
+import CustomCard3 from "../../component/card/card_3/CustomCard3";
+import axios from "axios";
+import fixtureData from "../../component/fixtureData";
 
 function Fixtures() {
+
+  const [loading, setLoading] = useState(true);
+  const [fixtures, setFixtures] = useState([]);
+
+
+  const getFixtures = async () => {
+    // axios.get("https://21b6-203-76-123-69.ngrok-free.app/api/fixtures/league/11").then((response) => {
+    //   setFixtures(response.data);
+    //   setLoading(false);
+    // });
+
+    setFixtures(fixtureData);
+  };
+
+  useEffect(() => {
+    getFixtures();
+  }, []);
+
   return (
     <>
       <div className={style.fixtureBg}>
-        <div className="d-flex justify-content-center min-vh-100 flex-column">
+        <div className="mt-5 min-vh-100">
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-4">
-                <CustomCard />
+                <CustomCard3 />
               </div>
               <div className="col-md-4">
-                <CustomCard2 />
+                <div className={style.middleBlock}>
+                {fixtures.map((fixture, index) => (
+                  <CustomCard2 key={index} data={fixture}/>
+                ))}
+                </div>
               </div>
               <div className="col-md-4">
                 <div className={style.card}>
