@@ -17,9 +17,12 @@ function Fixtures() {
 
   const getFixtures = async (id) => {
     axios.get(`${BaseURL}/fixtures/league/${id}`).then((response) => {
-      setFixtures(response.data);
+      const sortedData = response.data.sort((a, b) => {
+        return new Date(a.is_complete) - new Date(b.is_complete);
+      });
+      setFixtures(sortedData);
       setLoading(false);
-      setFixtureDetails(response?.data[0]);
+      setFixtureDetails(sortedData[0]);
     });
 
     // setFixtures(fixtureData);
@@ -28,6 +31,11 @@ function Fixtures() {
   const handleCardDetails = (id) => {
     setFixtureDetails(fixtures.find((fixture) => fixture.match_id === id));
   };
+
+  const handleEvent = (eventData) => {
+    getFixtures(id);
+    console.log(eventData);
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -50,7 +58,7 @@ function Fixtures() {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-md-4">
-                  <CustomCard3 data={fixtureDetails} />
+                  <CustomCard3 data={fixtureDetails} onEvent={handleEvent}/>
                 </div>
                 <div className="col-md-4">
                   <div className={style.middleBlock}>
