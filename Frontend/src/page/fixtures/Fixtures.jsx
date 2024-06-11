@@ -5,16 +5,18 @@ import CustomCard2 from "../../component/card/card_2/CustomCard";
 import CustomCard3 from "../../component/card/card_3/CustomCard3";
 import axios from "axios";
 import fixtureData from "../../component/fixtureData";
+import { useParams } from "react-router-dom";
 
 function Fixtures() {
 
+  const BaseURL = import.meta.env.VITE_API_BASE_URL;
   const [loading, setLoading] = useState(true);
   const [fixtures, setFixtures] = useState([]);
   const [fixtureDetails, setFixtureDetails] = useState({});
+  const { id } = useParams();
 
-
-  const getFixtures = async () => {
-    axios.get("https://admin.kickoff.rubyet.info/api/fixtures/league/11").then((response) => {
+  const getFixtures = async (id) => {
+    axios.get(`${BaseURL}/fixtures/league/${id}`).then((response) => {
       setFixtures(response.data);
       setLoading(false);
       setFixtureDetails(response?.data[0]);
@@ -28,7 +30,7 @@ function Fixtures() {
   };
 
   useEffect(() => {
-    getFixtures();
+    getFixtures(id);
   }, []);
 
   return (

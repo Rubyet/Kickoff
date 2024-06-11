@@ -1,7 +1,7 @@
 import PlayerCard from "../../component/PlayerCard";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./random.css";
 import Loading from "../../component/loading/Loading";
 
@@ -14,7 +14,7 @@ function Random() {
   const [containerSize, setContainerSize] = useState();
   const outerDiv = useRef(null);
   const { id } = useParams();
-  console.log(id);
+  const navigate = useNavigate();
 
   const getData = async (id) => {
     axios.get(`${BaseURL}/random/${id}`).then((response) => {
@@ -78,9 +78,9 @@ function Random() {
     };
     axios.post(`${BaseURL}/fixtures/simple`, data).then((response) => {
       console.log(response);
-      // if (response.status == 201) {
-      //     navigate(`/random/${response.data.gameId}`)
-      // }
+      if (response.status == 201) {
+          navigate(`/fixtures/${response.data.fixture_id}`)
+      }
     });
   };
 
