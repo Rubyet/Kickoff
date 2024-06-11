@@ -172,12 +172,15 @@ function getPlayerStats(playerId, callback) {
     return playerLevel;
   }
   
-  // Example usage:
-  const playerId = 123; // Your player id
-  getPlayerStats(playerId, (error, playerStats) => {
+  function getlevel(){
+    // Example usage:
+    const playerId = 123; // Your player id
+    getPlayerStats(playerId, (error, playerStats) => {
     if (error) {
-      console.error('Error fetching player stats:', error);
+        console.error('Error fetching player stats:', error);
     } else {
-      console.log('Player stats:', playerStats);
+        console.log('Player stats:', playerStats);
     }
-  });
+    });
+  }
+  
