@@ -21,7 +21,7 @@ function App() {
           <Route path="/random/:id" element={<Random />} />
           <Route path="/test" element={<Random_Test />} />
           <Route path="/kickoff" element={<Kickoff />} />
-          <Route path="/fixtures" element={<Fixtures />} />
+          <Route path="/fixtures/:id" element={<Fixtures />} />
           <Route path="/test1" element={<Test />} />
 
         </Routes>
