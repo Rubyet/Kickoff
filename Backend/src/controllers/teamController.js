@@ -1,42 +1,40 @@
 const db = require('../config/db-connection');
-var response = [];
-var TeamIndexes = [];
-exports.getRandomTeams = (req, res) => {
-    (async () => {
-        try {
-            const game = await db.query('SELECT * FROM games where id = ?', req.params.id);
 
-            const playerIdsString = game[0].players;
-            const playerIds = JSON.parse(playerIdsString);
-            const playerIdsStr = playerIds.join(',');
+exports.getRandomTeams = async (req, res) => {
+    try {
+        const game = await db.query('SELECT * FROM games where id = ?', req.params.id);
 
-            const players = await db.query(
-                `SELECT 
-                    *, 
-                    CONCAT(?, image) AS image, 
-                    CASE 
-                        WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
-                        ELSE '' 
-                    END AS avatar 
-                 FROM players 
-                 WHERE id IN (${playerIdsStr})`,
-                [global.playersLocation, global.playersLocation]
-            );
+        const playerIdsString = game[0].players;
+        const playerIds = JSON.parse(playerIdsString);
+        const playerIdsStr = playerIds.join(',');
 
-            NoOfPlayers = game[0].no_of_players;
-            TeamsPerPlayer = game[0].no_of_teams_per_players;
+        const players = await db.query(
+            `SELECT 
+                *, 
+                CONCAT(?, image) AS image, 
+                CASE 
+                    WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
+                    ELSE '' 
+                END AS avatar 
+            FROM players 
+            WHERE id IN (${playerIdsStr})`,
+            [global.playersLocation, global.playersLocation]
+        );
 
-            TeamIndexes = JSON.parse(game[0].teams);
-            const teamIdsStr = TeamIndexes.join(',');
-            const Teams = await db.query(`SELECT *, CONCAT(?, logo) AS logo FROM fifa_teams WHERE id IN (${teamIdsStr})`, [global.logoLocation]);
+        const NoOfPlayers = game[0].no_of_players;
+        const TeamsPerPlayer = game[0].no_of_teams_per_players;
 
-            assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams);
+        const TeamIndexes = JSON.parse(game[0].teams);
+        const teamIdsStr = TeamIndexes.join(',');
+        const Teams = await db.query(`SELECT *, CONCAT(?, logo) AS logo FROM fifa_teams WHERE id IN (${teamIdsStr})`, [global.logoLocation]);
 
-            res.json(response);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    })();
+        const response = await assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams);
+
+        res.json(response);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Internal Server Error');
+    }
 };
 
 function shuffle(array) {
@@ -47,8 +45,8 @@ function shuffle(array) {
     return array;
 }
 
-function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams) {
-    response = [];
+async function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players, Teams) {
+    const response = [];
     if (NoOfPlayers * TeamsPerPlayer > TeamIndexes.length) {
         throw new Error("Not enough teams for each player to have the specified number of teams.");
     }
@@ -60,12 +58,13 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
         player.playerName = players[i].name;
         player.playerImage = players[i].image;
         player.playerAvatar = players[i].avatar;
-        player.playerLevel = 5;
-        player.playerGoals = 15;
-        player.playerTotalMatch = 8;
-        player.playerTotalWin = 5;
-        player.playerTotalLose = 3;
-        player.playerTotalDraw = 2;
+
+        try {
+            const playerStats = await getPlayerStats(player.playerId);
+            player.playerStats = playerStats;
+        } catch (error) {
+            console.error(error); // Handle any errors
+        }
         player.teams = [];
         for (let j = 0; j < TeamsPerPlayer; j++) {
             // Retrieve the team information based on randomTeams[j]
@@ -78,8 +77,90 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
                 console.error(`Team with id ${teamIndex} not found`);
             }
         }
+
         response.push(player);
     }
+    return response;
+}
+
+
+// player stats
+
+function getPlayerStats(playerId) {
+    console.log("Player ID", playerId);
+    return new Promise((resolve, reject) => {
+        const query = `
+            SELECT * FROM matches 
+            WHERE (player_home_id = ? OR player_away_id = ?) AND is_complete = 1
+        `;
+        db.query(query, [playerId, playerId])
+            .then(results => {
+                let totalPlayed = 0;
+                let totalWin = 0;
+                let totalLose = 0;
+                let totalDraw = 0;
+                let totalGoalScored = 0;
+                let totalGoalAgainst = 0;
+
+                results.forEach(match => {
+                    totalPlayed++;
+
+                    if (match.team_home_goal > match.team_away_goal) {
+                        if (match.player_home_id === playerId) {
+                            totalWin++;
+                        } else {
+                            totalLose++;
+                        }
+                    } else if (match.team_home_goal < match.team_away_goal) {
+                        if (match.player_home_id === playerId) {
+                            totalLose++;
+                        } else {
+                            totalWin++;
+                        }
+                    } else {
+                        totalDraw++;
+                    }
+
+                    if (match.player_home_id === playerId) {
+                        totalGoalScored += match.team_home_goal;
+                        totalGoalAgainst += match.team_away_goal;
+                    } else {
+                        totalGoalScored += match.team_away_goal;
+                        totalGoalAgainst += match.team_home_goal;
+                    }
+                });
+
+                const playerLevel = calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored);
+
+                const playerStats = {
+                    totalPlayed,
+                    totalWin,
+                    totalLose,
+                    totalDraw,
+                    totalGoalScored,
+                    totalGoalAgainst,
+                    playerLevel
+                };
+
+                resolve(playerStats);
+            })
+            .catch(error => {
+                reject(error);
+            });
+    });
+}
+
+function calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored) {
+    // Example calculation of player level
+    let playerLevel = 'Beginner';
+
+    if (totalPlayed >= 10 && totalWin / totalPlayed >= 0.5 && totalGoalScored >= 20) {
+        playerLevel = 'Intermediate';
+    } else if (totalPlayed >= 20 && totalWin / totalPlayed >= 0.6 && totalGoalScored >= 50) {
+        playerLevel = 'Advanced';
+    }
+
+    return playerLevel;
 }
 
 // CRUD Operations for fifa_teams

@@ -163,9 +163,7 @@ async function generateMatchCombinations(playerTeamCombination, fixtureId, match
         for (let j = 0; j < homePlayer.teams.length; j++) {
             const homeTeam = homePlayer.teams[j];
 
-            for (let k = 0; k < playerTeamCombination.length; k++) {
-                if (i === k) continue; // Skip if it's the same player
-
+            for (let k = i + 1; k < playerTeamCombination.length; k++) { // Start from i + 1 to ensure unique combinations
                 const awayPlayer = playerTeamCombination[k];
 
                 for (let l = 0; l < awayPlayer.teams.length; l++) {

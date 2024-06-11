@@ -26,6 +26,7 @@ router.get('/players/:id', playersController.getPlayerById);
 router.put('/players/:id', playersController.updatePlayerById);
 router.delete('/players/:id', playersController.deletePlayerById);
 router.get('/players', playersController.getAllPlayers);
+// router.get('/playes/test', playersController.getest);
 
 // Fixtures routes
 router.get('/fixtures', fixturesController.getAllFixtures);
@@ -48,6 +49,7 @@ router.get('/match-type', gameController.getAllMatchTypes);
 router.get('/match-type/:id', gameController.getMatchTypeById);
 //matches routes
 router.put('/matches/:id', matchesController.updateMatchById);
+router.get('/matches/points/:fixture_id', matchesController.calculatePointsTable);
 //fixture type
 router.get('/fixture-type', gameController.getAllFixtureTypes);
 router.get('/fixture-type/:id', gameController.getFixtureTypeById);
