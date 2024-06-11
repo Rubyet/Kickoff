@@ -15,12 +15,24 @@ exports.createPlayer = (req, res) => {
 
 // Get a player by ID
 exports.getPlayerById = (req, res) => {
-    db.query('SELECT * FROM players WHERE id = ?', [req.params.id])
+    const playerIdsStr = req.params.id;
+    db.query(
+        `SELECT 
+            *, 
+            CONCAT(?, image) AS image, 
+            CASE 
+                WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
+                ELSE '' 
+            END AS avatar 
+         FROM players 
+         WHERE id = (${playerIdsStr})`,
+        [global.playersLocation, global.playersLocation]
+    )
         .then(result => {
             if (result.length === 0) {
                 res.status(404).send('Player not found');
             } else {
-                res.json(result[0]);
+                return res.json(result[0]);
             }
         })
         .catch(error => {
@@ -64,7 +76,14 @@ exports.deletePlayerById = (req, res) => {
 
 // Get all players
 exports.getAllPlayers = (req, res) => {
-    db.query('SELECT * FROM players')
+    db.query(`SELECT 
+            *, 
+            CONCAT(?, image) AS image, 
+            CASE 
+                WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
+                ELSE '' 
+            END AS avatar 
+         FROM players`,[global.playersLocation, global.playersLocation])
         .then(result => {
             res.json(result);
         })

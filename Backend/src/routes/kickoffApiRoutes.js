@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const playersController = require('../controllers/playersController');
-const matchController = require('../controllers/matchController');
+const fixturesController = require('../controllers/fixturesController');
 const teamsController = require('../controllers/teamController');
 const gameController = require('../controllers/gameController');
 
@@ -11,7 +11,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/random/:id', teamsController.getRandomTeams);
-router.get('/match', matchController.getAllMatches);
 
 // CRUD routes for teams
 router.post('/teams', teamsController.createTeam);
@@ -27,15 +26,15 @@ router.put('/players/:id', playersController.updatePlayerById);
 router.delete('/players/:id', playersController.deletePlayerById);
 router.get('/players', playersController.getAllPlayers);
 
-// Matches routes
-router.get('/matches', matchController.getAllMatches);
-router.get('/matches/:id', matchController.getMatchById);
-router.post('/matches', matchController.createMatch);
-router.put('/matches/:id', matchController.updateMatch);
-router.delete('/matches/:id', matchController.deleteMatch);
+// Fixtures routes
+router.get('/fixtures', fixturesController.getAllFixtures);
+router.get('/fixtures/:id', fixturesController.getMatchById);
+router.post('/fixtures', fixturesController.createMatch);
+router.put('/fixtures/:id', fixturesController.updateMatch);
+router.delete('/fixtures/:id', fixturesController.deleteMatch);
 
-router.post('/matches/simple', matchController.createSimpleMatch);
-router.get('/matches/league/:id', matchController.getLeagueMatches);
+router.post('/fixtures/simple', fixturesController.createSimpleMatch);
+router.get('/fixtures/league/:id', fixturesController.getLeagueFixtures);
 
 // CRUD routes for games
 router.post('/games', gameController.createGame);
