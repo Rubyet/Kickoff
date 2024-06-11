@@ -77,7 +77,6 @@ function Random() {
       player_team_combination: gameData,
     };
     axios.post(`${BaseURL}/fixtures/simple`, data).then((response) => {
-      console.log(response);
       // if (response.status == 201) {
       //     navigate(`/random/${response.data.gameId}`)
       // }
