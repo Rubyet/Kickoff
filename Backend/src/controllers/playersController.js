@@ -92,3 +92,95 @@ exports.getAllPlayers = (req, res) => {
             res.status(500).send('Internal Server Error');
         });
 };
+
+
+
+// player
+
+function getPlayerStats(playerId, callback) {
+    const query = `
+      SELECT * FROM matches 
+      WHERE (player_home_id = ? OR player_away_id = ?) && is_complete = 1
+    `;
+  
+    db.query(query, [playerId, playerId], (error, results) => {
+      if (error) {
+        return callback(error);
+      }
+  
+      let totalPlayed = 0;
+      let totalWin = 0;
+      let totalLose = 0;
+      let totalDraw = 0;
+      let totalGoalScored = 0;
+      let totalGoalAgainst = 0;
+  
+      results.forEach(match => {
+        totalPlayed++;
+  
+        if (match.team_home_goal > match.team_away_goal) {
+          if (match.player_home_id === playerId) {
+            totalWin++;
+          } else {
+            totalLose++;
+          }
+        } else if (match.team_home_goal < match.team_away_goal) {
+          if (match.player_home_id === playerId) {
+            totalLose++;
+          } else {
+            totalWin++;
+          }
+        } else {
+          totalDraw++;
+        }
+  
+        if (match.player_home_id === playerId) {
+          totalGoalScored += match.team_home_goal;
+          totalGoalAgainst += match.team_away_goal;
+        } else {
+          totalGoalScored += match.team_away_goal;
+          totalGoalAgainst += match.team_home_goal;
+        }
+      });
+  
+      const playerLevel = calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored);
+  
+      const playerStats = {
+        totalPlayed,
+        totalWin,
+        totalLose,
+        totalDraw,
+        totalGoalScored,
+        totalGoalAgainst,
+        playerLevel
+      };
+  
+      callback(null, playerStats);
+    });
+  }
+  
+  function calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored) {
+    // Example calculation of player level
+    let playerLevel = 'Beginner';
+  
+    if (totalPlayed >= 10 && totalWin / totalPlayed >= 0.5 && totalGoalScored >= 20) {
+      playerLevel = 'Intermediate';
+    } else if (totalPlayed >= 20 && totalWin / totalPlayed >= 0.6 && totalGoalScored >= 50) {
+      playerLevel = 'Advanced';
+    }
+  
+    return playerLevel;
+  }
+  
+  function getlevel(){
+    // Example usage:
+    const playerId = 123; // Your player id
+    getPlayerStats(playerId, (error, playerStats) => {
+    if (error) {
+        console.error('Error fetching player stats:', error);
+    } else {
+        console.log('Player stats:', playerStats);
+    }
+    });
+  }
+  

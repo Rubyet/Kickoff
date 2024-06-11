@@ -52,12 +52,11 @@ function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, TeamIndexes, players,
     if (NoOfPlayers * TeamsPerPlayer > TeamIndexes.length) {
         throw new Error("Not enough teams for each player to have the specified number of teams.");
     }
-
     shuffle(TeamIndexes);
 
     for (let i = 0; i < NoOfPlayers; i++) {
         const player = {};
-        player.playerId = players[i].id;
+        player.playerId = players[i]?.id;
         player.playerName = players[i].name;
         player.playerImage = players[i].image;
         player.playerAvatar = players[i].avatar;
@@ -158,95 +157,3 @@ exports.getAllTeams = (req, res) => {
             res.status(500).send('Internal Server Error');
         });
 };
-
-
-// app.get('/db', (req, res) => {
-
-
-//     // Example usage
-//     (async () => {
-//         try {
-//             // SELECT query
-//             const users = await db.query('SELECT * FROM fifa_teams where id = 1');
-//             console.log(users);
-//             users.forEach(user => {
-//                 console.log('Name:', user.name);
-//             });
-
-//             // INSERT query
-//             // const newUser = { name: 'John', email: 'john@example.com' };
-//             // const result = await db.query('INSERT INTO users SET ?', newUser);
-//             // console.log('New user ID:', result.insertId);
-
-//             // UPDATE query
-//             // await db.query('UPDATE users SET email = ? WHERE id = ?', ['newemail@example.com', 1]);
-//             // console.log('User email updated');
-
-//             // DELETE query
-//             // await db.query('DELETE FROM users WHERE id = ?', [1]);
-//             // console.log('User deleted');
-//         } catch (error) {
-//             console.error('Error:', error);
-//         }
-//     })();
-//     res.send("OK");
-// });
-
-
-// app.get('/random', (req, res) => {
-//     NameOfPlayers = ["P1", "P2", "P3"];
-//     ImageOfPlayers = ["P1", "P2", "P3"];
-//     NoOfPlayers = 3;
-//     TeamsPerPlayer = 2;
-//     teams = [1, 2, 3, 4, 5, 6]
-//     TeamNames = ["Team-1", "Team-2", "Team-3", "Team-4", "Team-5", "Team-6"]
-//     TeamLogos = ["Team-1 Logo", "Team-2 Logo", "Team-3 Logo", "Team-4 Logo", "Team-5 Logo", "Team-6 Logo"]
-//     PlayersArray = [];
-//     PlayersJson = {};
-//     random = 1
-
-//     // NameOfPlayers = ["P1","P2","P3"];
-//     // NoOfPlayers = 3;
-//     // TeamsPerPlayer = 1;
-//     // teams = [1,2,3]
-//     // TeamNames = ["Team-1","Team-2","Team-3"]
-//     // PlayersArray = [];
-//     // PlayersJson = {};
-//     // random = 1
-
-//     function shuffle(array) {
-//         for (let i = array.length - 1; i > 0; i--) {
-//             const j = Math.floor(Math.random() * (i + 1));
-//             [array[i], array[j]] = [array[j], array[i]];
-//         }
-//     }
-
-//     function assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, teams) {
-//         if (NoOfPlayers * TeamsPerPlayer > teams.length) {
-//             throw new Error("Not enough teams for each player to have the specified number of teams.");
-//         }
-
-//         if (random === 1) {
-//             shuffle(teams);
-//         }
-
-//         for (let i = 0; i < NoOfPlayers; i++) {
-//             let playerTeams = [];
-//             for (let j = i * TeamsPerPlayer; j < (i + 1) * TeamsPerPlayer; j++) {
-//                 playerTeams.push(TeamNames[teams[j] - 1]); // Adjust index since teams are 1-indexed
-//             }
-//             PlayersJson[NameOfPlayers[i]] = playerTeams;
-//         }
-
-//         for (let i = 0; i < NoOfPlayers; i++) {
-//             PlayersArray.push(teams.slice(i * TeamsPerPlayer, (i + 1) * TeamsPerPlayer));
-//         }
-//     }
-
-//     assignTeamsToPlayers(NoOfPlayers, TeamsPerPlayer, teams)
-
-//     console.log(PlayersArray);
-//     console.log(PlayersJson);
-
-//     res.send(PlayersJson);
-// });

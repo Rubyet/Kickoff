@@ -4,6 +4,7 @@ const playersController = require('../controllers/playersController');
 const fixturesController = require('../controllers/fixturesController');
 const teamsController = require('../controllers/teamController');
 const gameController = require('../controllers/gameController');
+const matchesController = require('../controllers/matchesController');
 
 // Existing routes
 router.get('/', (req, res) => {
@@ -45,6 +46,8 @@ router.get('/games', gameController.getAllGames);
 //match type
 router.get('/match-type', gameController.getAllMatchTypes);
 router.get('/match-type/:id', gameController.getMatchTypeById);
+//matches routes
+router.put('/matches/:id', matchesController.updateMatchById);
 //fixture type
 router.get('/fixture-type', gameController.getAllFixtureTypes);
 router.get('/fixture-type/:id', gameController.getFixtureTypeById);

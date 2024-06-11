@@ -1,6 +1,4 @@
 const db = require('../config/db-connection');
-const playersController = require('./playersController'); // Import the players controller
-const teamsController = require('./teamController'); // Import the teams controller
 const axios = require('axios');
 
 exports.getAllFixtures = (req, res) => {
@@ -242,7 +240,7 @@ exports.getLeagueFixtures = (req, res) => {
 
 const fetchPlayerById = async (playerId) => {
     try {
-        const response = await axios.get(`http://localhost:3000/api/players/${playerId}`);
+        const response = await axios.get(`${hostname}/api/players/${playerId}`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching player with ID ${playerId}:`, error);
@@ -252,7 +250,7 @@ const fetchPlayerById = async (playerId) => {
 
 const fetchTeamById = async (teamId) => {
     try {
-        const response = await axios.get(`http://localhost:3000/api/teams/${teamId}`);
+        const response = await axios.get(`${hostname}/api/teams/${teamId}`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching team with ID ${teamId}:`, error);
@@ -267,6 +265,7 @@ async function enrichMatchDetails(matches, res) {
             const playerAway = await fetchPlayerById(match.player_away_id);
             const teamHome = await fetchTeamById(match.team_home_id);
             const teamAway = await fetchTeamById(match.team_away_id);
+            // const teamAway = teamsController.getTeamById({"params":{"id":1}},resadasd);
 
 
             return {
