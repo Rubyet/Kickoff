@@ -10,15 +10,21 @@ function Fixtures() {
 
   const [loading, setLoading] = useState(true);
   const [fixtures, setFixtures] = useState([]);
+  const [fixtureDetails, setFixtureDetails] = useState({});
 
 
   const getFixtures = async () => {
-    // axios.get("https://21b6-203-76-123-69.ngrok-free.app/api/fixtures/league/11").then((response) => {
-    //   setFixtures(response.data);
-    //   setLoading(false);
-    // });
+    axios.get("https://admin.kickoff.rubyet.info/api/fixtures/league/11").then((response) => {
+      setFixtures(response.data);
+      setLoading(false);
+      setFixtureDetails(response?.data[0]);
+    });
 
-    setFixtures(fixtureData);
+    // setFixtures(fixtureData);
+  };
+
+  const handleCardDetails = (id) => {
+    setFixtureDetails(fixtures.find((fixture) => fixture.match_id === id));
   };
 
   useEffect(() => {
@@ -32,13 +38,17 @@ function Fixtures() {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-4">
-                <CustomCard3 />
+                <CustomCard3 data={fixtureDetails}/>
               </div>
               <div className="col-md-4">
                 <div className={style.middleBlock}>
-                {fixtures.map((fixture, index) => (
-                  <CustomCard2 key={index} data={fixture}/>
-                ))}
+                  {fixtures.map((fixture, index) => (
+                    <div key={index} onClick={() => handleCardDetails(fixture.match_id)} className={style.middleBlockButton}>
+                      <CustomCard2
+                        data={fixture}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="col-md-4">

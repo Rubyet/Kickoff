@@ -3,7 +3,7 @@ export default [
         "match_id": 25,
         "player_home": {},
         "player_away": {},
-        "team_home_goal": 0,
+        "team_home_goal": 7,
         "team_home": {
             "id": 2,
             "name": "Real Madrid CF",
@@ -14,7 +14,7 @@ export default [
             "mid": 85,
             "def": 83
         },
-        "team_away_goal": 0,
+        "team_away_goal": 8,
         "team_away": {
             "id": 4,
             "name": "FC Barcelona",
@@ -25,9 +25,8 @@ export default [
             "mid": 84,
             "def": 83
         },
-        "is_complete": 0
+        "is_complete": 1
     },
-    {},
     {
         "match_id": 27,
         "player_home": {
@@ -64,7 +63,7 @@ export default [
             "mid": 79,
             "def": 83
         },
-        "is_complete": 0
+        "is_complete": 1
     },
     {
         "match_id": 28,
@@ -118,7 +117,7 @@ export default [
             "image": "http://localhost:3000/public/images/players/neimar.png",
             "avatar": ""
         },
-        "team_home_goal": 0,
+        "team_home_goal": 8,
         "team_home": {
             "id": 5,
             "name": "Liverpool",
@@ -129,7 +128,7 @@ export default [
             "mid": 82,
             "def": 84
         },
-        "team_away_goal": 0,
+        "team_away_goal": 5,
         "team_away": {
             "id": 4,
             "name": "FC Barcelona",
@@ -140,7 +139,7 @@ export default [
             "mid": 84,
             "def": 83
         },
-        "is_complete": 0
+        "is_complete": 1
     },
     {
         "match_id": 30,
@@ -688,7 +687,7 @@ export default [
             "image": "http://localhost:3000/public/images/players/neimar.png",
             "avatar": ""
         },
-        "team_home_goal": 0,
+        "team_home_goal": 1,
         "team_home": {
             "id": 6,
             "name": "Paris Saint-Germain",
@@ -699,7 +698,7 @@ export default [
             "mid": 79,
             "def": 83
         },
-        "team_away_goal": 0,
+        "team_away_goal": 2,
         "team_away": {
             "id": 3,
             "name": "FC Bayern München",
@@ -710,7 +709,7 @@ export default [
             "mid": 84,
             "def": 83
         },
-        "is_complete": 0
+        "is_complete": 1
     },
     {
         "match_id": 45,
