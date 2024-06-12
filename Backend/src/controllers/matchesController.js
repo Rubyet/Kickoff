@@ -19,6 +19,31 @@ exports.updateMatchById = (req, res) => {
 
 //function to calculate the points table from the matches table to total wins, losses, draws, goals for, goals against, and points of each team
 exports.calculatePointsTable = (req, res) => {
+    let allTeams;
+    let allPlayers;
+    db.query('SELECT * , CONCAT(?, logo) AS logo FROM fifa_teams', [global.logoLocation])
+        .then(result => {
+            allTeams = result;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return 'Internal Server Error';
+        });
+    db.query(`SELECT 
+            *, 
+            CONCAT(?, image) AS image, 
+            CASE 
+                WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
+                ELSE '' 
+            END AS avatar 
+        FROM players`, [global.playersLocation, global.playersLocation])
+        .then(result => {
+            allPlayers = result;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return 'Internal Server Error';
+        });
     db.query('SELECT * FROM matches WHERE fixture_id = ? AND match_type IN (1, 2, 3) AND is_complete = 1', [req.params.fixture_id])
         .then(result => {
             let teamIds = [];
@@ -42,9 +67,9 @@ exports.calculatePointsTable = (req, res) => {
 
             teamIds.forEach(teamId => {
                 let teamMatches = result.filter(match => match.team_home === teamId || match.team_away === teamId);
-                
+
                 let teamPoints = {
-                    team_id: teamId,
+                    team: allTeams.filter(team => team.id === teamId),
                     played: 0,
                     wins: 0,
                     losses: 0,
@@ -86,9 +111,9 @@ exports.calculatePointsTable = (req, res) => {
             });
             playerIds.forEach(playerId => {
                 let playerMatches = result.filter(match => match.player_home_id === playerId || match.player_away_id === playerId);
-                
+
                 let playerPoints = {
-                    player_id: playerId,
+                    player: allPlayers.filter(player => player.id === playerId),
                     played: 0,
                     wins: 0,
                     losses: 0,
@@ -136,5 +161,3 @@ exports.calculatePointsTable = (req, res) => {
             res.status(500).send('Internal Server Error');
         });
 };
-
-
