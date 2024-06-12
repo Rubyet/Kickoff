@@ -138,7 +138,7 @@ exports.createSimpleMatch = (req, res) => {
 
 async function generateMatchCombinations(playerTeamCombination, fixtureId, matchType, fixtureType) {
     // Check if matches for the given fixtureId already exist
-    const existingMatches = await db.query('SELECT * FROM matches WHERE fixture_id = ?', [fixtureId]);
+    const existingMatches = await db.query('SELECT * FROM matches WHERE fixture_id = ? ORDER BY is_complete ASC', [fixtureId]);
 
     if (existingMatches.length > 0) {
         // Format existing matches
