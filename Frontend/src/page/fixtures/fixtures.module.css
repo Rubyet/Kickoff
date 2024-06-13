@@ -7,14 +7,15 @@
     overflow: hidden;
 }
 .card{
-    background-color: #ffffffda;
+    background-color: #00000066;
+    backdrop-filter: blur(20px);
     color: rgb(255, 255, 255);
     margin: 10px;
     /* padding: 10px; */
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 .cardHeader{
-    background-color: #ff0000;
+    background-color: #000000;
     /* border-radius: 10px; */
     padding: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
@@ -22,6 +23,7 @@
 }
 .cardHeaderText{
     color: rgb(255, 255, 255);
+    margin: 0;
 }
 .teamImage{
     width: 100px;

@@ -8,29 +8,30 @@ import fixtureData from "../../component/fixtureData";
 import { useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
 import { Flipper, Flipped } from 'react-flip-toolkit';
-import { Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 function Fixtures() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
   const [loading, setLoading] = useState(true);
   const [fixtures, setFixtures] = useState([]);
   const [fixtureDetails, setFixtureDetails] = useState({});
+  const [teamPoints, setTeamPoints] = useState([]);
+  const [playerPoints, setPlayerPoints] = useState([]);
   const { id } = useParams();
 
   const getFixtures = async (id) => {
     axios.get(`${BaseURL}/fixtures/league/${id}`).then((response) => {
-      const sortedData = response.data.sort((a, b) => {
-        return a.is_complete - b.is_complete;
-      });
-      setFixtures(sortedData);
+      setFixtures(response.data);
       setLoading(false);
-      setFixtureDetails(sortedData[0]);
+      setFixtureDetails(response.data[0]);
     });
   };
 
   const getMatchPoint = async (id) => {
     axios.get(`${BaseURL}/matches/points/${id}`).then((response) => {
-      console.log(response.data);
+      console.log(response.data.player_points);
+      setTeamPoints(response?.data?.team_points);
+      setPlayerPoints(response?.data?.player_points);
     });
   };
 
@@ -40,7 +41,7 @@ function Fixtures() {
 
   const handleEvent = (eventData) => {
     getFixtures(id);
-    console.log(eventData);
+    getMatchPoint(id);
   }
 
   useEffect(() => {
@@ -87,99 +88,84 @@ function Fixtures() {
                 <div className="col-md-4">
                   <div className={style.card}>
                     <div className={`${style.cardHeader}`}>
-                      <h5 className={style.cardHeaderText}>Player Table</h5>
+                      <h6 className={style.cardHeaderText}>Team Ponts Table</h6>
                     </div>
-                    <div className="card-body">
-                      <TableContainer>
-                        <Table>
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Name</TableCell>
-                              <TableCell align="right">Calories</TableCell>
-                              <TableCell align="right">Fat&nbsp;(g)</TableCell>
-                              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-                              <TableCell align="right">Protein&nbsp;(g)</TableCell>
-                            </TableRow>
-                          </TableHead>
-                        </Table>
-                      </TableContainer>
+                    <div className="">
+                        <table className="table table-sm table-striped text-white">
+                          <thead className="thead-dark">
+                            <tr>
+                              <th>Name</th>
+                              <th>P</th>
+                              <th>W</th>
+                              <th>L</th>
+                              <th>D</th>
+                              <th>S</th>
+                              <th>A</th>
+                              <th>G/D</th>
+                              <th>Pt</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {teamPoints?.map((row, index) => (
+                              <tr
+                                key={index}
+                              >
+                                <td>{row?.team[0]?.name}</td> 
+                                <td>{row?.played}</td>
+                                <td>{row?.wins}</td>
+                                <td>{row?.losses}</td>
+                                <td>{row?.draws}</td>
+                                <td>{row?.goals_scored}</td>
+                                <td>{row?.goals_against}</td>
+                                <td>{Math.abs(row?.goals_scored - row?.goals_against)}</td>
+                                <td>{row?.points}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
 
                     </div>
                   </div>
                   <div className={style.card}>
                     <div className={`${style.cardHeader}`}>
-                      <h5 className={style.cardHeaderText}>Point Table</h5>
+                      <h6 className={style.cardHeaderText}>Player Ponts Table</h6>
                     </div>
-                    <div className="card-body">
-                      <table className="table table-sm table-responsive-lg">
-                        <thead>
-                          <tr>
-                            <th scope="col">Rank</th>
-                            <th scope="col">Team</th>
-                            <th scope="col">Played</th>
-                            <th scope="col">Won</th>
-                            <th scope="col">Drawn</th>
-                            <th scope="col">Lost</th>
-                            <th scope="col">Points</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>FC Champs</td>
-                            <td>10</td>
-                            <td>8</td>
-                            <td>1</td>
-                            <td>1</td>
-                            <td>25</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Tigers</td>
-                            <td>10</td>
-                            <td>7</td>
-                            <td>2</td>
-                            <td>1</td>
-                            <td>23</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td>FC Champs</td>
-                            <td>10</td>
-                            <td>6</td>
-                            <td>2</td>
-                            <td>2</td>
-                            <td>20</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">4</th>
-                            <td>FC Champs</td>
-                            <td>10</td>
-                            <td>5</td>
-                            <td>3</td>
-                            <td>2</td>
-                            <td>18</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">5</th>
-                            <td>FC Champs</td>
-                            <td>10</td>
-                            <td>4</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>15</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">6</th>
-                            <td>FC Champs</td>
-                            <td>10</td>
-                            <td>3</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>12</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                    <div className="">
+                        <table className="table table-sm text-white">
+                          <thead className="thead-dark">
+                            <tr>
+                              <th>Name</th>
+                              <th>P</th>
+                              <th>W</th>
+                              <th>L</th>
+                              <th>D</th>
+                              <th>S</th>
+                              <th>A</th>
+                              <th>G/D</th>
+                              <th>Pt</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {playerPoints?.map((row, index) => (
+                              <tr
+                                key={index}
+                              >
+                                <td>{row?.player[0]?.name}</td> 
+                                <td>{row?.played}</td>
+                                <td>{row?.wins}</td>
+                                <td>{row?.losses}</td>
+                                <td>{row?.draws}</td>
+                                <td>{row?.goals_scored}</td>
+                                <td>{row?.goals_against}</td>
+                                <td>{Math.abs(row?.goals_scored - row?.goals_against)}</td>
+                                <td>{row?.points}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+
                     </div>
                   </div>
                 </div>
