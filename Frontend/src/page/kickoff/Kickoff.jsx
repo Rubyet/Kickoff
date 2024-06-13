@@ -52,7 +52,7 @@ function Kickoff() {
       setTeamName([]);
       setMatchType("");
       setMatchTypeName("");
-      setFixture("");
+      setFixture(null);
       setPlayerName([]);
     } else {
       setNumberOfPlayers(0);

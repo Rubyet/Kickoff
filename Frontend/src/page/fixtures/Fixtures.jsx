@@ -7,6 +7,8 @@ import axios from "axios";
 import fixtureData from "../../component/fixtureData";
 import { useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
+import { Flipper, Flipped } from 'react-flip-toolkit';
+import { Table, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 function Fixtures() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -18,14 +20,18 @@ function Fixtures() {
   const getFixtures = async (id) => {
     axios.get(`${BaseURL}/fixtures/league/${id}`).then((response) => {
       const sortedData = response.data.sort((a, b) => {
-        return new Date(a.is_complete) - new Date(b.is_complete);
+        return a.is_complete - b.is_complete;
       });
       setFixtures(sortedData);
       setLoading(false);
       setFixtureDetails(sortedData[0]);
     });
+  };
 
-    // setFixtures(fixtureData);
+  const getMatchPoint = async (id) => {
+    axios.get(`${BaseURL}/matches/points/${id}`).then((response) => {
+      console.log(response.data);
+    });
   };
 
   const handleCardDetails = (id) => {
@@ -44,6 +50,8 @@ function Fixtures() {
         setLoading(false);
       }, 10000);
     });
+
+    getMatchPoint(id);
   }, []);
 
   return (
@@ -58,22 +66,46 @@ function Fixtures() {
             <div className="container-fluid">
               <div className="row">
                 <div className="col-md-4">
-                  <CustomCard3 data={fixtureDetails} onEvent={handleEvent}/>
+                  <CustomCard3 data={fixtureDetails} onEvent={handleEvent} />
                 </div>
                 <div className="col-md-4">
                   <div className={style.middleBlock}>
-                    {fixtures.map((fixture, index) => (
-                      <div
-                        key={index}
-                        onClick={() => handleCardDetails(fixture.match_id)}
-                        className={style.middleBlockButton}
-                      >
-                        <CustomCard2 data={fixture} />
-                      </div>
-                    ))}
+                    <Flipper flipKey={fixtures}>
+                      {fixtures.map((fixture, index) => (
+                        <Flipped key={index} flipId={fixture.match_id} stagger >
+                          <div
+                            onClick={() => handleCardDetails(fixture.match_id)}
+                            className={style.middleBlockButton}
+                          >
+                            <CustomCard2 data={fixture} />
+                          </div>
+                        </Flipped>
+                      ))}
+                    </Flipper>
                   </div>
                 </div>
                 <div className="col-md-4">
+                  <div className={style.card}>
+                    <div className={`${style.cardHeader}`}>
+                      <h5 className={style.cardHeaderText}>Player Table</h5>
+                    </div>
+                    <div className="card-body">
+                      <TableContainer>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Name</TableCell>
+                              <TableCell align="right">Calories</TableCell>
+                              <TableCell align="right">Fat&nbsp;(g)</TableCell>
+                              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+                              <TableCell align="right">Protein&nbsp;(g)</TableCell>
+                            </TableRow>
+                          </TableHead>
+                        </Table>
+                      </TableContainer>
+
+                    </div>
+                  </div>
                   <div className={style.card}>
                     <div className={`${style.cardHeader}`}>
                       <h5 className={style.cardHeaderText}>Point Table</h5>
