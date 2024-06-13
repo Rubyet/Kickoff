@@ -1,8 +1,11 @@
 const db = require('../config/db-connection');
-
+const upload = require('../config/file-upload');
 // Create a new player
 exports.createPlayer = (req, res) => {
-  const { name, image, avatar } = req.body;
+  const {name} = req.body;
+  const images = req.files.map(file => file.filename); // Get uploaded file names
+  const image = images[0]; // Assuming the first file is 'image'
+  const avatar = images[1]; // Assuming the second file is 'avatar'
   db.query('INSERT INTO players (name, image, avatar) VALUES (?, ?, ?)', [name, image, avatar])
     .then(result => {
       res.status(201).send(`Player created with ID: ${result.insertId}`);
@@ -41,9 +44,11 @@ exports.getPlayerById = (req, res) => {
     });
 };
 
-// Update a player by ID
 exports.updatePlayerById = (req, res) => {
-  const { name, image, avatar } = req.body;
+  const {name} = req.body;
+  const images = req.files.map(file => file.filename); // Get uploaded file names
+  const image = images[0]; // Assuming the first file is 'image'
+  const avatar = images[1]; // Assuming the second file is 'avatar'
   db.query('UPDATE players SET name = ?, image = ?, avatar = ? WHERE id = ?', [name, image, avatar, req.params.id])
     .then(result => {
       if (result.affectedRows === 0) {

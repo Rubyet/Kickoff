@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../config/file-upload');
 const playersController = require('../controllers/playersController');
 const fixturesController = require('../controllers/fixturesController');
 const teamsController = require('../controllers/teamController');
@@ -21,9 +22,9 @@ router.delete('/teams/:id', teamsController.deleteTeamById);
 router.get('/teams', teamsController.getAllTeams);
 
 // CRUD routes for players
-router.post('/players', playersController.createPlayer);
+router.post('/players', upload.any(), playersController.createPlayer);
 router.get('/players/:id', playersController.getPlayerById);
-router.put('/players/:id', playersController.updatePlayerById);
+router.put('/players/:id', upload.any(), playersController.updatePlayerById);
 router.delete('/players/:id', playersController.deletePlayerById);
 router.get('/players', playersController.getAllPlayers);
 // router.get('/playes/test', playersController.getest);

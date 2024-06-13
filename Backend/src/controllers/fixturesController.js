@@ -178,11 +178,11 @@ async function generateMatchCombinations(playerTeamCombination, fixtureId, match
                     );
 
                     // Get the inserted match ID
-                    const matchId = result.insertId;
+                    const fixtureId = result.insertId;
 
                     // Add the match combination to the array
                     matchCombinations.push({
-                        match_id: matchId,
+                        match_id: fixtureId,
                         player_home_id: homePlayer.playerId,
                         player_away_id: awayPlayer.playerId,
                         team_home_goal: 0,
@@ -202,8 +202,8 @@ async function generateMatchCombinations(playerTeamCombination, fixtureId, match
 exports.getLeagueFixtures = (req, res) => {
     (async () => {
         try {
-            const matchId = req.params.id;
-            const match = await db.query('SELECT * FROM fixtures WHERE id = ?', [matchId]);
+            const fixtureId = req.params.id;
+            const match = await db.query('SELECT * FROM fixtures WHERE id = ?', [fixtureId]);
 
             if (match.length === 0) {
                 return res.status(404).json({ error: 'Match not found' });
@@ -219,7 +219,7 @@ exports.getLeagueFixtures = (req, res) => {
             const { match_type, fixture_type } = game[0];
             const playerTeamCombination = JSON.parse(match[0].player_team_combination);
 
-            const matchCombinations = await generateMatchCombinations(playerTeamCombination, matchId, match_type, fixture_type);
+            const matchCombinations = await generateMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
 
             if (matchCombinations.message) {
                 const matchesWithDetails = await enrichMatchDetails(matchCombinations.matchCombinations, res);

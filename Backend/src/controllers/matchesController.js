@@ -21,30 +21,27 @@ exports.updateMatchById = (req, res) => {
 exports.calculatePointsTable = (req, res) => {
     let allTeams;
     let allPlayers;
-    db.query('SELECT * , CONCAT(?, logo) AS logo FROM fifa_teams', [global.logoLocation])
+    // Fetch teams first
+    db.query('SELECT *, CONCAT(?, logo) AS logo FROM fifa_teams', [global.logoLocation])
         .then(result => {
             allTeams = result;
+
+            // After fetching teams, fetch players
+            return db.query(`SELECT 
+        *, 
+        CONCAT(?, image) AS image, 
+        CASE 
+            WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
+            ELSE '' 
+        END AS avatar 
+    FROM players`, [global.playersLocation, global.playersLocation]);
         })
-        .catch(error => {
-            console.error('Error:', error);
-            return 'Internal Server Error';
-        });
-    db.query(`SELECT 
-            *, 
-            CONCAT(?, image) AS image, 
-            CASE 
-                WHEN avatar IS NOT NULL AND avatar != '' THEN CONCAT(?, avatar) 
-                ELSE '' 
-            END AS avatar 
-        FROM players`, [global.playersLocation, global.playersLocation])
-        .then(result => {
-            allPlayers = result;
+        .then(playersResult => {
+            allPlayers = playersResult;
+            // Now both allTeams and allPlayers are available
+            // Do further processing or send response
+            return db.query('SELECT * FROM matches WHERE fixture_id = ? AND match_type IN (1, 2, 3) AND is_complete = 1', [req.params.fixture_id])
         })
-        .catch(error => {
-            console.error('Error:', error);
-            return 'Internal Server Error';
-        });
-    db.query('SELECT * FROM matches WHERE fixture_id = ? AND match_type IN (1, 2, 3) AND is_complete = 1', [req.params.fixture_id])
         .then(result => {
             let teamIds = [];
             let playerIds = [];
@@ -158,6 +155,7 @@ exports.calculatePointsTable = (req, res) => {
         })
         .catch(error => {
             console.error('Error:', error);
-            res.status(500).send('Internal Server Error');
+            // Handle errors appropriately
         });
+
 };
