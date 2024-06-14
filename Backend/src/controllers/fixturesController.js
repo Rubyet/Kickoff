@@ -57,28 +57,25 @@ exports.createMatch = (req, res) => {
     })();
 };
 
-exports.updateMatch = (req, res) => {
+exports.updateFinishedfixture = (req, res) => {
     (async () => {
         try {
-            const updatedMatch = {
-                game: req.body.game,
-                player_team_combination: req.body.player_team_combination,
-                league_is_complete: req.body.league_is_complete,
-                league_matches: req.body.league_matches,
-                knockout_is_complete: req.body.knockout_is_complete,
-                knockout_matches: req.body.knockout_matches,
-                final_is_complete: req.body.final_is_complete,
-                final_matches: req.body.final_matches,
-                friendly_is_complete: req.body.friendly_is_complete,
-                friendly_matches: req.body.friendly_matches,
-                others_is_complete: req.body.others_is_complete,
-                others_type: req.body.others_type,
-                others_matches: req.body.others_matches
-            };
+            result = null;
+            const { fixture_is_complete, finished_matches } = req.body;
+            if (req.body.fixture_type == "league") {
+                result = await db.query('UPDATE fixtures SET league_is_complete = ? , league_matches = ? WHERE id = ?', [fixture_is_complete, finished_matches, req.params.id]);
+            } else if (req.body.fixture_type == "knockout") {
+                result = await db.query('UPDATE fixtures SET knockout_is_complete = ? , knockout_matches = ? WHERE id = ?', [fixture_is_complete, finished_matches, req.params.id]);
+            } else if (req.body.fixture_type == "final") {
+                result = await db.query('UPDATE fixtures SET final_is_complete = ? , final_matches = ? WHERE id = ?', [fixture_is_complete, finished_matches, req.params.id]);
+            } else if (req.body.fixture_type == "friendly") {
+                result = await db.query('UPDATE fixtures SET friendly_is_complete = ? , friendly_matches = ? WHERE id = ?', [fixture_is_complete, finished_matches, req.params.id]);
+            } else if (req.body.fixture_type == "others") {
+                result = await db.query('UPDATE fixtures SET others_is_complete = ? , others_matches = ? WHERE id = ?', [fixture_is_complete, finished_matches, req.params.id]);
+            }
 
-            const result = await db.query('UPDATE fixtures SET ? WHERE id = ?', [updatedMatch, req.params.id]);
             if (result.affectedRows > 0) {
-                res.json({ id: req.params.id, ...updatedMatch });
+                res.json({ updatedId: req.params.id});
             } else {
                 res.status(404).send('Match not found');
             }
@@ -136,7 +133,7 @@ exports.createSimpleMatch = (req, res) => {
 };
 
 
-async function generateMatchCombinations(playerTeamCombination, fixtureId, matchType, fixtureType) {
+async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId, matchType, fixtureType) {
     // Check if matches for the given fixtureId already exist
     const existingMatches = await db.query('SELECT * FROM matches WHERE fixture_id = ? ORDER BY is_complete ASC', [fixtureId]);
 
@@ -154,7 +151,6 @@ async function generateMatchCombinations(playerTeamCombination, fixtureId, match
         }));
         return existingMatchCombinations;
     }
-
     let matchCombinations = [];
 
     for (let i = 0; i < playerTeamCombination.length; i++) {
@@ -209,6 +205,10 @@ exports.getLeagueFixtures = (req, res) => {
                 return res.status(404).json({ error: 'Match not found' });
             }
 
+            if (match[0].league_is_complete != null && match[0].league_is_complete == 1) {
+                res.json(JSON.parse(match[0].league_matches));
+            }
+
             const gameId = match[0].game;
             const game = await db.query('SELECT match_type, fixture_type FROM games WHERE id = ?', [gameId]);
 
@@ -219,7 +219,7 @@ exports.getLeagueFixtures = (req, res) => {
             const { match_type, fixture_type } = game[0];
             const playerTeamCombination = JSON.parse(match[0].player_team_combination);
 
-            const matchCombinations = await generateMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
+            const matchCombinations = await generateLeagueMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
 
             if (matchCombinations.message) {
                 const matchesWithDetails = await enrichMatchDetails(matchCombinations.matchCombinations, res);
@@ -291,3 +291,45 @@ async function enrichMatchDetails(matches, res) {
         }
     }));
 }
+
+//write a function to generate all the matches from player_team_combination as knocout matches based on match_type and also store them in the database
+exports.generateKnockoutMatches = (req, res) => {
+    (async () => {
+        try {
+            const fixtureId = req.params.id;
+            const match = await db.query('SELECT * FROM fixtures WHERE id = ?', [fixtureId]);
+
+            if (match.length === 0) {
+                return res.status(404).json({ error: 'Match not found' });
+            }
+
+            if (match[0].knockout_is_complete != null && match[0].knockout_is_complete == 1) {
+                res.json(JSON.parse(match[0].knockout_matches));
+            }
+
+            const gameId = match[0].game;
+            const game = await db.query('SELECT match_type, fixture_type FROM games WHERE id = ?', [gameId]);
+
+            if (game.length === 0) {
+                return res.status(404).json({ error: 'Game not found' });
+            }
+
+            const { match_type, fixture_type } = game[0];
+            const playerTeamCombination = JSON.parse(match[0].player_team_combination);
+
+            const matchCombinations = await generateKnockoutMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
+
+            if (matchCombinations.message) {
+                const matchesWithDetails = await enrichMatchDetails(matchCombinations.matchCombinations, res);
+                return res.status(200).json({ message: matchCombinations.message, matches: matchesWithDetails });
+            }
+
+            const matchesWithDetails = await enrichMatchDetails(matchCombinations, res);
+
+            res.json(matchesWithDetails);
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'Internal Server Error' + error });
+        }
+    })();
+};

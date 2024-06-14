@@ -33,7 +33,7 @@ router.get('/players', playersController.getAllPlayers);
 router.get('/fixtures', fixturesController.getAllFixtures);
 router.get('/fixtures/:id', fixturesController.getMatchById);
 router.post('/fixtures', fixturesController.createMatch);
-router.put('/fixtures/:id', fixturesController.updateMatch);
+router.put('/updateFinishedFixture/:id', fixturesController.updateFinishedfixture);
 router.delete('/fixtures/:id', fixturesController.deleteMatch);
 
 router.post('/fixtures/simple', fixturesController.createSimpleMatch);
