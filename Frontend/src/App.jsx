@@ -9,6 +9,7 @@ import Home from './page/Home'
 import Kickoff from './page/kickoff/Kickoff'
 import Test from './page/Test'
 import Fixtures from './page/fixtures/Fixtures'
+import 'animate.css';
 
 function App() {
 

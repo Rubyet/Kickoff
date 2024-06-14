@@ -4,11 +4,9 @@ import style from "./fixtures.module.css";
 import CustomCard2 from "../../component/card/card_2/CustomCard";
 import CustomCard3 from "../../component/card/card_3/CustomCard3";
 import axios from "axios";
-import fixtureData from "../../component/fixtureData";
 import { useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
 import { Flipper, Flipped } from 'react-flip-toolkit';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 function Fixtures() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -91,7 +89,7 @@ function Fixtures() {
                       <h6 className={style.cardHeaderText}>Team Ponts Table</h6>
                     </div>
                     <div className="">
-                        <table className="table table-sm table-striped text-white">
+                        <table className="table table-sm table-striped text-white tableSorter">
                           <thead className="thead-dark">
                             <tr>
                               <th>Name</th>
@@ -132,8 +130,8 @@ function Fixtures() {
                       <h6 className={style.cardHeaderText}>Player Ponts Table</h6>
                     </div>
                     <div className="">
-                        <table className="table table-sm text-white">
-                          <thead className="thead-dark">
+                        <table className="table table-sm text-white tableSorter">
+                          {/* <thead className="thead-dark">
                             <tr>
                               <th>Name</th>
                               <th>P</th>
@@ -146,11 +144,24 @@ function Fixtures() {
                               <th>Pt</th>
 
                             </tr>
-                          </thead>
+                          </thead> */}
                           <tbody>
+                          <tr>
+                              <th>Name</th>
+                              <th>P</th>
+                              <th>W</th>
+                              <th>L</th>
+                              <th>D</th>
+                              <th>S</th>
+                              <th>A</th>
+                              <th>G/D</th>
+                              <th>Pt</th>
+
+                            </tr>
                             {playerPoints?.map((row, index) => (
                               <tr
                                 key={index}
+                                // className={`animate__animated animate__zoomIn animate__delay-${index*2}s`}
                               >
                                 <td>{row?.player[0]?.name}</td> 
                                 <td>{row?.played}</td>
