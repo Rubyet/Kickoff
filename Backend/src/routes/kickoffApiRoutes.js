@@ -38,6 +38,7 @@ router.delete('/fixtures/:id', fixturesController.deleteMatch);
 
 router.post('/fixtures/simple', fixturesController.createSimpleMatch);
 router.get('/fixtures/league/:id', fixturesController.getLeagueFixtures);
+router.get('/fixtures/knockout/:id', fixturesController.generateKnockoutMatches);
 
 // CRUD routes for games
 router.post('/games', gameController.createGame);

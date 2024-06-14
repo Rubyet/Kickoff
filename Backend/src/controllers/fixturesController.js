@@ -133,10 +133,10 @@ exports.createSimpleMatch = (req, res) => {
 };
 
 
-async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId, matchType, fixtureType) {
+async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId, matchType, fixtureType, type) {
     // Check if matches for the given fixtureId already exist
-    const existingMatches = await db.query('SELECT * FROM matches WHERE fixture_id = ? ORDER BY is_complete ASC', [fixtureId]);
-
+    const existingMatches = await db.query('SELECT * FROM matches WHERE fixture_id = ? AND type = ? ORDER BY is_complete ASC', [fixtureId, type]);
+console.log(type);
     if (existingMatches.length > 0) {
         // Format existing matches
         let existingMatchCombinations = existingMatches.map(match => ({
@@ -152,35 +152,41 @@ async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId,
         return existingMatchCombinations;
     }
     let matchCombinations = [];
-    let thisfixtureId = fixtureId;
-    for (let i = 0; i < playerTeamCombination.length; i++) {
-        const homePlayer = playerTeamCombination[i];
+
+for (let i = 0; i < playerTeamCombination.length; i++) {
+    const homePlayer = playerTeamCombination[i];
+    
+    for (let j = 0; j < homePlayer.teams.length; j++) {
+        const homeTeam = homePlayer.teams[j];
         
-        for (let j = 0; j < homePlayer.teams.length; j++) {
-            const homeTeam = homePlayer.teams[j];
-            
-            for (let k = i + 1; k < playerTeamCombination.length; k++) { // Start from i + 1 to ensure unique combinations
-                const awayPlayer = playerTeamCombination[k];
-                console.log(awayPlayer.teams.length);
-                console.log(matchType );
-                for (let l = 0; l < awayPlayer.teams.length; l++) {
-                    console.log(matchType );
-                    const awayTeam = awayPlayer.teams[l];
-                    console.log("here1"+thisfixtureId);
+        for (let k = i + 1; k < playerTeamCombination.length; k++) { // Start from i + 1 to ensure unique combinations
+            const awayPlayer = playerTeamCombination[k];
+
+            for (let l = 0; l < awayPlayer.teams.length; l++) {
+                const awayTeam = awayPlayer.teams[l];
+
+                // Determine how many times teams should play against each other based on fixture_type
+                let matchCount = 1;
+                if (fixture = "knockout" && fixtureType === 2) {
+                    matchCount = 2;
+                }
+
+                // Generate match combinations based on matchCount
+                for (let m = 0; m < matchCount; m++) {
                     // Insert the match into the database with the provided matchType and fixtureType
                     const result = await db.query(
                         `INSERT INTO matches 
-                        (fixture_id, match_type, fixture_type, player_home_id, team_home, player_away_id, team_away) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                        [thisfixtureId, matchType, fixtureType, homePlayer.playerId, homeTeam, awayPlayer.playerId, awayTeam]
+                        (fixture_id, match_type, fixture_type, player_home_id, team_home, player_away_id, team_away, type) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                        [fixtureId, matchType, fixtureType, homePlayer.playerId, homeTeam, awayPlayer.playerId, awayTeam, type]
                     );
 
                     // Get the inserted match ID
-                    const fixtureId = result.insertId;
+                    const thisFixtureId = result.insertId;
 
                     // Add the match combination to the array
                     matchCombinations.push({
-                        match_id: fixtureId,
+                        match_id: thisFixtureId,
                         player_home_id: homePlayer.playerId,
                         player_away_id: awayPlayer.playerId,
                         team_home_goal: 0,
@@ -193,8 +199,10 @@ async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId,
             }
         }
     }
+}
 
-    return matchCombinations;
+return matchCombinations;
+
 }
 
 exports.getLeagueFixtures = (req, res) => {
@@ -221,7 +229,7 @@ exports.getLeagueFixtures = (req, res) => {
             const { match_type, fixture_type } = game[0];
             const playerTeamCombination = JSON.parse(match[0].player_team_combination);
             
-            const matchCombinations = await generateLeagueMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
+            const matchCombinations = await generateLeagueMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type, "league");
 
             if (matchCombinations.message) {
                 const matchesWithDetails = await enrichMatchDetails(matchCombinations.matchCombinations, res);
@@ -319,7 +327,7 @@ exports.generateKnockoutMatches = (req, res) => {
             const { match_type, fixture_type } = game[0];
             const playerTeamCombination = JSON.parse(match[0].player_team_combination);
 
-            const matchCombinations = await generateKnockoutMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
+            const matchCombinations = await generateLeagueMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type, "knockout");
 
             if (matchCombinations.message) {
                 const matchesWithDetails = await enrichMatchDetails(matchCombinations.matchCombinations, res);
