@@ -171,7 +171,7 @@ async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId,
                     const result = await db.query(
                         `INSERT INTO matches 
                         (fixture_id, match_type, fixture_type, player_home_id, team_home, player_away_id, team_away) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                        VALUES (?, ?, ?, ?, ?, ?, ?)`,
                         [thisfixtureId, matchType, fixtureType, homePlayer.playerId, homeTeam, awayPlayer.playerId, awayTeam]
                     );
 
