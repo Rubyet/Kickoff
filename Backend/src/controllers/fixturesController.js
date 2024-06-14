@@ -152,25 +152,27 @@ async function generateLeagueMatchCombinations(playerTeamCombination, fixtureId,
         return existingMatchCombinations;
     }
     let matchCombinations = [];
-
+    let thisfixtureId = fixtureId;
     for (let i = 0; i < playerTeamCombination.length; i++) {
         const homePlayer = playerTeamCombination[i];
-
+        
         for (let j = 0; j < homePlayer.teams.length; j++) {
             const homeTeam = homePlayer.teams[j];
-
+            
             for (let k = i + 1; k < playerTeamCombination.length; k++) { // Start from i + 1 to ensure unique combinations
                 const awayPlayer = playerTeamCombination[k];
-
+                console.log(awayPlayer.teams.length);
+                console.log(matchType );
                 for (let l = 0; l < awayPlayer.teams.length; l++) {
+                    console.log(matchType );
                     const awayTeam = awayPlayer.teams[l];
-
+                    console.log("here1"+thisfixtureId);
                     // Insert the match into the database with the provided matchType and fixtureType
                     const result = await db.query(
                         `INSERT INTO matches 
-                        (fixture_id, match_type, fixture_type, player_home_id, team_home, player_away_id, team_away, is_complete) 
+                        (fixture_id, match_type, fixture_type, player_home_id, team_home, player_away_id, team_away) 
                         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                        [fixtureId, matchType, fixtureType, homePlayer.playerId, homeTeam, awayPlayer.playerId, awayTeam, false]
+                        [thisfixtureId, matchType, fixtureType, homePlayer.playerId, homeTeam, awayPlayer.playerId, awayTeam]
                     );
 
                     // Get the inserted match ID
@@ -218,7 +220,7 @@ exports.getLeagueFixtures = (req, res) => {
 
             const { match_type, fixture_type } = game[0];
             const playerTeamCombination = JSON.parse(match[0].player_team_combination);
-
+            
             const matchCombinations = await generateLeagueMatchCombinations(playerTeamCombination, fixtureId, match_type, fixture_type);
 
             if (matchCombinations.message) {
