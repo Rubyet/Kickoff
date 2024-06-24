@@ -114,42 +114,6 @@ function Fixtures() {
                       <h6 className={style.cardHeaderText}>Team Ponts Table</h6>
                     </div>
                     <div className="">
-
-                      
-                      {/* <table className="table table-sm table-striped text-white tableSorter">
-                        <thead className="thead-dark">
-                          <tr>
-                            <th>Name</th>
-                            <th>P</th>
-                            <th>W</th>
-                            <th>L</th>
-                            <th>D</th>
-                            <th>S</th>
-                            <th>A</th>
-                            <th>G/D</th>
-                            <th>Pt</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {teamPoints?.map((row, index) => (
-                            <tr key={index}>
-                              <td>{row?.team[0]?.name}</td>
-                              <td>{row?.played}</td>
-                              <td>{row?.wins}</td>
-                              <td>{row?.losses}</td>
-                              <td>{row?.draws}</td>
-                              <td>{row?.goals_scored}</td>
-                              <td>{row?.goals_against}</td>
-                              <td>
-                                {Math.abs(
-                                  row?.goals_scored - row?.goals_against
-                                )}
-                              </td>
-                              <td>{row?.points}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table> */}
                       <PointDataTable data={teamPoints} />
                     </div>
                   </div>

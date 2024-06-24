@@ -130,7 +130,6 @@ function CustomCard3({ data, onEvent }) {
                     alt=""
                   />
                   <div className={styled.teamName}>{data?.team_away?.name}</div>{" "}
-                  <br />
                   <div className={styled.playerName}>
                     {data?.player_away?.name}
                   </div>
