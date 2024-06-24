@@ -23,9 +23,17 @@ table.tableSorter th div.sortArrow div.sortArrowDescending {
 	background: url('arrow_desc.png') no-repeat !important;
 }
 
-.pointDataTable .MuiDataGrid-row:nth-child(2) {
-	text-align: left !important;
-}
-.MuiDataGrid-cell{
-	border-top: none !important;
+.MuiDataGrid-root{
+    border-width: unset !important;
+	border-radius: 0 !important;
+	border-style: unset !important;
+    color: #ffffff;
+    font-family: unset !important; 
+    font-weight: unset !important; 
+    font-size: unset !important; 
+    line-height: unset !important; 
+    letter-spacing: unset !important; 
+    outline: none;
+    height: unset !important;
+	--DataGrid-containerBackground : transparent !important;
 }
