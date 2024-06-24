@@ -7,6 +7,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
 import { Flipper, Flipped } from "react-flip-toolkit";
+import PointDataTable from "../../component/datatable/PointDataTable";
 
 function Fixtures() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -55,6 +56,18 @@ function Fixtures() {
     }
   };
 
+  const teamPointsColumnsName = [
+    { field: "name", headerName: "Name" },
+    { field: "played", headerName: "P" },
+    { field: "wins", headerName: "W" },
+    { field: "losses", headerName: "L" },
+    { field: "draws", headerName: "D" },
+    { field: "goals_scored", headerName: "S" },
+    { field: "goals_against", headerName: "A" },
+    { field: "goals_difference", headerName: "G/D" },
+    { field: "points", headerName: "Pt" },
+  ]
+
   useEffect(() => {
     setLoading(true);
     getFixtures(id).then(() => {
@@ -101,7 +114,9 @@ function Fixtures() {
                       <h6 className={style.cardHeaderText}>Team Ponts Table</h6>
                     </div>
                     <div className="">
-                      <table className="table table-sm table-striped text-white tableSorter">
+
+                      
+                      {/* <table className="table table-sm table-striped text-white tableSorter">
                         <thead className="thead-dark">
                           <tr>
                             <th>Name</th>
@@ -134,7 +149,8 @@ function Fixtures() {
                             </tr>
                           ))}
                         </tbody>
-                      </table>
+                      </table> */}
+                      <PointDataTable data={teamPoints} />
                     </div>
                   </div>
                   <div className={style.card}>
