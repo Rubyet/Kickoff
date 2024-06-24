@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import PointDataTable from "../../component/datatable/PointDataTable";
+import PlayerPointDataTable from "../../component/datatable/PlayerPointDataTable";
 
 function Fixtures() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -56,17 +57,6 @@ function Fixtures() {
     }
   };
 
-  const teamPointsColumnsName = [
-    { field: "name", headerName: "Name" },
-    { field: "played", headerName: "P" },
-    { field: "wins", headerName: "W" },
-    { field: "losses", headerName: "L" },
-    { field: "draws", headerName: "D" },
-    { field: "goals_scored", headerName: "S" },
-    { field: "goals_against", headerName: "A" },
-    { field: "goals_difference", headerName: "G/D" },
-    { field: "points", headerName: "Pt" },
-  ]
 
   useEffect(() => {
     setLoading(true);
@@ -124,55 +114,7 @@ function Fixtures() {
                       </h6>
                     </div>
                     <div className="">
-                      <table className="table table-sm text-white tableSorter">
-                        {/* <thead className="thead-dark">
-                            <tr>
-                              <th>Name</th>
-                              <th>P</th>
-                              <th>W</th>
-                              <th>L</th>
-                              <th>D</th>
-                              <th>S</th>
-                              <th>A</th>
-                              <th>G/D</th>
-                              <th>Pt</th>
-
-                            </tr>
-                          </thead> */}
-                        <tbody>
-                          <tr>
-                            <th>Name</th>
-                            <th>P</th>
-                            <th>W</th>
-                            <th>L</th>
-                            <th>D</th>
-                            <th>S</th>
-                            <th>A</th>
-                            <th>G/D</th>
-                            <th>Pt</th>
-                          </tr>
-                          {playerPoints?.map((row, index) => (
-                            <tr
-                              key={index}
-                              // className={`animate__animated animate__zoomIn animate__delay-${index*2}s`}
-                            >
-                              <td>{row?.player[0]?.name}</td>
-                              <td>{row?.played}</td>
-                              <td>{row?.wins}</td>
-                              <td>{row?.losses}</td>
-                              <td>{row?.draws}</td>
-                              <td>{row?.goals_scored}</td>
-                              <td>{row?.goals_against}</td>
-                              <td>
-                                {Math.abs(
-                                  row?.goals_scored - row?.goals_against
-                                )}
-                              </td>
-                              <td>{row?.points}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                      <PlayerPointDataTable data={playerPoints} />
                     </div>
                   </div>
 
