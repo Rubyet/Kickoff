@@ -21,7 +21,7 @@ function PlayerSelect() {
         getPlayers()
     }, []);
 
-    console.log(data)
+    // console.log(data)
 
     return (
         <>

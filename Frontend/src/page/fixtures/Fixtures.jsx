@@ -6,7 +6,7 @@ import CustomCard3 from "../../component/card/card_3/CustomCard3";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
-import { Flipper, Flipped } from 'react-flip-toolkit';
+import { Flipper, Flipped } from "react-flip-toolkit";
 
 function Fixtures() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -15,6 +15,7 @@ function Fixtures() {
   const [fixtureDetails, setFixtureDetails] = useState({});
   const [teamPoints, setTeamPoints] = useState([]);
   const [playerPoints, setPlayerPoints] = useState([]);
+  const [displayFinishButton, setDisplayFinishButton] = useState(false);
   const { id } = useParams();
 
   const getFixtures = async (id) => {
@@ -22,12 +23,13 @@ function Fixtures() {
       setFixtures(response.data);
       setLoading(false);
       setFixtureDetails(response.data[0]);
+      showFinishButton(response.data);
     });
   };
 
   const getMatchPoint = async (id) => {
     axios.get(`${BaseURL}/matches/points/${id}`).then((response) => {
-      console.log(response.data.player_points);
+      // console.log(response.data.player_points);
       setTeamPoints(response?.data?.team_points);
       setPlayerPoints(response?.data?.player_points);
     });
@@ -40,7 +42,18 @@ function Fixtures() {
   const handleEvent = (eventData) => {
     getFixtures(id);
     getMatchPoint(id);
-  }
+  };
+
+  const showFinishButton = (res) => {
+    const isComplete = res.filter((fixture) => fixture?.is_complete == 1);
+    if (isComplete.length != 0 && isComplete.length == res.length) {
+      setDisplayFinishButton(true);
+    } else if (isComplete.length == 0) {
+      setDisplayFinishButton(false);
+    } else { 
+      setDisplayFinishButton(false);
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -49,7 +62,6 @@ function Fixtures() {
         setLoading(false);
       }, 10000);
     });
-
     getMatchPoint(id);
   }, []);
 
@@ -71,7 +83,7 @@ function Fixtures() {
                   <div className={style.middleBlock}>
                     <Flipper flipKey={fixtures}>
                       {fixtures.map((fixture, index) => (
-                        <Flipped key={index} flipId={fixture.match_id} stagger >
+                        <Flipped key={index} flipId={fixture.match_id} stagger>
                           <div
                             onClick={() => handleCardDetails(fixture.match_id)}
                             className={style.middleBlockButton}
@@ -89,49 +101,51 @@ function Fixtures() {
                       <h6 className={style.cardHeaderText}>Team Ponts Table</h6>
                     </div>
                     <div className="">
-                        <table className="table table-sm table-striped text-white tableSorter">
-                          <thead className="thead-dark">
-                            <tr>
-                              <th>Name</th>
-                              <th>P</th>
-                              <th>W</th>
-                              <th>L</th>
-                              <th>D</th>
-                              <th>S</th>
-                              <th>A</th>
-                              <th>G/D</th>
-                              <th>Pt</th>
-
+                      <table className="table table-sm table-striped text-white tableSorter">
+                        <thead className="thead-dark">
+                          <tr>
+                            <th>Name</th>
+                            <th>P</th>
+                            <th>W</th>
+                            <th>L</th>
+                            <th>D</th>
+                            <th>S</th>
+                            <th>A</th>
+                            <th>G/D</th>
+                            <th>Pt</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {teamPoints?.map((row, index) => (
+                            <tr key={index}>
+                              <td>{row?.team[0]?.name}</td>
+                              <td>{row?.played}</td>
+                              <td>{row?.wins}</td>
+                              <td>{row?.losses}</td>
+                              <td>{row?.draws}</td>
+                              <td>{row?.goals_scored}</td>
+                              <td>{row?.goals_against}</td>
+                              <td>
+                                {Math.abs(
+                                  row?.goals_scored - row?.goals_against
+                                )}
+                              </td>
+                              <td>{row?.points}</td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            {teamPoints?.map((row, index) => (
-                              <tr
-                                key={index}
-                              >
-                                <td>{row?.team[0]?.name}</td> 
-                                <td>{row?.played}</td>
-                                <td>{row?.wins}</td>
-                                <td>{row?.losses}</td>
-                                <td>{row?.draws}</td>
-                                <td>{row?.goals_scored}</td>
-                                <td>{row?.goals_against}</td>
-                                <td>{Math.abs(row?.goals_scored - row?.goals_against)}</td>
-                                <td>{row?.points}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                   <div className={style.card}>
                     <div className={`${style.cardHeader}`}>
-                      <h6 className={style.cardHeaderText}>Player Ponts Table</h6>
+                      <h6 className={style.cardHeaderText}>
+                        Player Ponts Table
+                      </h6>
                     </div>
                     <div className="">
-                        <table className="table table-sm text-white tableSorter">
-                          {/* <thead className="thead-dark">
+                      <table className="table table-sm text-white tableSorter">
+                        {/* <thead className="thead-dark">
                             <tr>
                               <th>Name</th>
                               <th>P</th>
@@ -145,40 +159,48 @@ function Fixtures() {
 
                             </tr>
                           </thead> */}
-                          <tbody>
+                        <tbody>
                           <tr>
-                              <th>Name</th>
-                              <th>P</th>
-                              <th>W</th>
-                              <th>L</th>
-                              <th>D</th>
-                              <th>S</th>
-                              <th>A</th>
-                              <th>G/D</th>
-                              <th>Pt</th>
-
+                            <th>Name</th>
+                            <th>P</th>
+                            <th>W</th>
+                            <th>L</th>
+                            <th>D</th>
+                            <th>S</th>
+                            <th>A</th>
+                            <th>G/D</th>
+                            <th>Pt</th>
+                          </tr>
+                          {playerPoints?.map((row, index) => (
+                            <tr
+                              key={index}
+                              // className={`animate__animated animate__zoomIn animate__delay-${index*2}s`}
+                            >
+                              <td>{row?.player[0]?.name}</td>
+                              <td>{row?.played}</td>
+                              <td>{row?.wins}</td>
+                              <td>{row?.losses}</td>
+                              <td>{row?.draws}</td>
+                              <td>{row?.goals_scored}</td>
+                              <td>{row?.goals_against}</td>
+                              <td>
+                                {Math.abs(
+                                  row?.goals_scored - row?.goals_against
+                                )}
+                              </td>
+                              <td>{row?.points}</td>
                             </tr>
-                            {playerPoints?.map((row, index) => (
-                              <tr
-                                key={index}
-                                // className={`animate__animated animate__zoomIn animate__delay-${index*2}s`}
-                              >
-                                <td>{row?.player[0]?.name}</td> 
-                                <td>{row?.played}</td>
-                                <td>{row?.wins}</td>
-                                <td>{row?.losses}</td>
-                                <td>{row?.draws}</td>
-                                <td>{row?.goals_scored}</td>
-                                <td>{row?.goals_against}</td>
-                                <td>{Math.abs(row?.goals_scored - row?.goals_against)}</td>
-                                <td>{row?.points}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
+
+                  {displayFinishButton === true && (
+                    <div>
+                      <button className="btn btn-primary">Finish</button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
