@@ -4,7 +4,7 @@ import style from "./fixtures.module.css";
 import CustomCard2 from "../../component/card/card_2/CustomCard";
 import CustomCard3 from "../../component/card/card_3/CustomCard3";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../component/loading/Loading";
 import { Flipper, Flipped } from "react-flip-toolkit";
 import PointDataTable from "../../component/datatable/PointDataTable";
@@ -19,6 +19,7 @@ function Fixtures() {
   const [playerPoints, setPlayerPoints] = useState([]);
   const [displayFinishButton, setDisplayFinishButton] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const getFixtures = async (id) => {
     axios.get(`${BaseURL}/fixtures/league/${id}`).then((response) => {
@@ -57,6 +58,20 @@ function Fixtures() {
     }
   };
 
+  const handleFinishButton = (e) => {
+    e.preventDefault();
+    const data = {
+      fixture_is_complete : 1,
+      fixture_type : "league",
+      finished_matches : JSON.stringify(fixtures),
+    }
+    axios.put(`${BaseURL}/updateFinishedFixture/${id}`, data).then((response) => {
+      if (response.status === 200) {
+        navigate("/");
+      }
+    }
+    );
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -120,7 +135,7 @@ function Fixtures() {
 
                   {displayFinishButton === true && (
                     <div>
-                      <button className="btn btn-primary">Finish</button>
+                      <button className="btn btn-primary" onClick={handleFinishButton}>Finish</button>
                     </div>
                   )}
                 </div>
