@@ -10,6 +10,7 @@ import Kickoff from './page/kickoff/Kickoff'
 import Test from './page/Test'
 import Fixtures from './page/fixtures/Fixtures'
 import 'animate.css';
+import PlayerInfo from './page/playerInfo/PlayerInfo'
 
 function App() {
 
@@ -20,10 +21,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/random/:id" element={<Random />} />
-          <Route path="/test" element={<Random_Test />} />
           <Route path="/kickoff" element={<Kickoff />} />
           <Route path="/fixtures/:id" element={<Fixtures />} />
+          <Route path="/playerinfo" element={<PlayerInfo />} />
+          
           <Route path="/test1" element={<Test />} />
+          <Route path="/test" element={<Random_Test />} />
 
         </Routes>
       </BrowserRouter>
