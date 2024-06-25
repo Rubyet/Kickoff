@@ -49,7 +49,7 @@ exports.getPlayerById = (req, res) => {
     })
     .catch(error => {
       console.error('Error:', error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send('Internal Server Error:'+ error);
     });
 };
 
@@ -147,7 +147,7 @@ exports.updatePlayerById = (req, res) => {
     })
     .catch(error => {
       console.error('Error:', error);
-      res.status(500).send('Internal Server Error');
+      res.status(500).send('Internal Server Error:'+ error);
     });
 };
 
