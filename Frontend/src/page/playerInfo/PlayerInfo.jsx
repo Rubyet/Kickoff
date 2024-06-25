@@ -3,6 +3,7 @@ import style from "./playerinfo.module.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 import PlayerCard from "../../component/card/playerCard/PlayerCard";
+import { Button, Modal } from "react-bootstrap";
 
 function PlayerInfo() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -72,6 +73,11 @@ function PlayerInfo() {
     }
   };
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   useEffect(() => {
     getPlayerList();
   }, []);
@@ -79,15 +85,17 @@ function PlayerInfo() {
     <>
       <div className={style.playerinfobg}>
         <div className="container">
-          <div className="card">
-            <div className="card-body">
+          <div className="">
+            <div className="">
               <div>
                 <div className="d-flex justify-content-between">
                   <div className="">
                     <h5 className="card-title text-white">Player Info</h5>
                   </div>
                   <div className="">
-                    <button className="btn btn-primary">Add Player</button>
+                    <button className="btn btn-primary" onClick={handleShow}>
+                      Add Player
+                    </button>
                   </div>
                 </div>
               </div>
@@ -131,15 +139,72 @@ function PlayerInfo() {
             </div>
           </div>
 
-          <div className="d-flex align-content-start flex-wrap mt-5">
+          <div className="d-flex align-content-start justify-content-center flex-wrap mt-5">
             {playerData.map((player, index) => (
               <div key={index}>
-                <PlayerCard player={player}/>
+                <PlayerCard player={player} />
               </div>
             ))}
           </div>
         </div>
       </div>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Modal heading</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="mb-3">
+              <label htmlFor="name" className="form-label">
+                Name
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                name="name"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="image" className="form-label">
+                Image
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                id="image"
+                name="image"
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="avatar" className="form-label">
+                Avatar
+              </label>
+              <input
+                type="file"
+                className="form-control"
+                id="avatar"
+                name="avatar"
+              />
+            </div>
+            <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </form>
+        </Modal.Body>
+        {/* <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer> */}
+      </Modal>
     </>
   );
 }
