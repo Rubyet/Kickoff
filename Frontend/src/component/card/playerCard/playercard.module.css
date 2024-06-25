@@ -86,10 +86,10 @@
 }
 
 .fut_player_card .player_card_top .player_picture {
-	width: 200px;
-	height: 200px;
+	width: 180px;
+	height: 180px;
 	margin: 0 auto;
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 .fut_player_card .player_card_top .player_picture img {
@@ -98,7 +98,7 @@
 	-o-object-fit: contain;
 	object-fit: contain;
 	position: relative;
-	right: -1.5rem;
+	right: -2rem;
 	bottom: 0;
 }
 

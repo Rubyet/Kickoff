@@ -74,9 +74,27 @@ function PlayerInfo() {
   };
 
   const [show, setShow] = useState(false);
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+  const [avatar, setAvatar] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("image", image);
+    formData.append("avatar", avatar);
+    axios.post(`${BaseURL}/players`, formData).then((response) => {
+      console.log(response);
+      // setShow(false);
+      // setImage(null);
+      // setName(null);
+      // setAvatar(null);
+  })
+}
 
   useEffect(() => {
     getPlayerList();
@@ -84,7 +102,7 @@ function PlayerInfo() {
   return (
     <>
       <div className={style.playerinfobg}>
-        <div className="container">
+        <div className="container pt-5">
           <div className="">
             <div className="">
               <div>
@@ -98,43 +116,6 @@ function PlayerInfo() {
                     </button>
                   </div>
                 </div>
-              </div>
-
-              <div className="mt-3">
-                {/* <table className="table table-striped text-white">
-                  <thead>
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Avatar</th>
-                      <th scope="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {playerData.map((player, index) => (
-                      <tr key={index}>
-                        <th scope="row">{index + 1}</th>
-                        <td>{player.name}</td>
-                        <td>
-                          <img
-                            src={player.image}
-                            alt={player.name}
-                            style={{ width: "50px" }}
-                          />
-                        </td>
-                        <td>
-                          <button className="btn btn-primary">Edit</button>
-                          <button
-                            className="btn btn-danger"
-                            onClick={() => deletePlayer(player.id)}
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table> */}
               </div>
             </div>
           </div>
@@ -154,7 +135,9 @@ function PlayerInfo() {
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <form>
+          <form 
+            encType="multipart/form-data"
+          >
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
                 Name
@@ -164,6 +147,8 @@ function PlayerInfo() {
                 className="form-control"
                 id="name"
                 name="name"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
               />
             </div>
             <div className="mb-3">
@@ -175,6 +160,7 @@ function PlayerInfo() {
                 className="form-control"
                 id="image"
                 name="image"
+                onChange={(e) => setImage(e.target.files[0])}
               />
             </div>
             <div className="mb-3">
@@ -186,12 +172,13 @@ function PlayerInfo() {
                 className="form-control"
                 id="avatar"
                 name="avatar"
+                onChange={(e) => setAvatar(e.target.files[0])}
               />
             </div>
             <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" onClick={handleSubmit} className="btn btn-primary">
               Submit
             </button>
           </form>
