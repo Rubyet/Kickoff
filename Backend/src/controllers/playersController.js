@@ -121,12 +121,12 @@ function getPlayerStats(playerId) {
 
 function calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored) {
   // Example calculation of player level
-  let playerLevel = 'Beginner';
+  let playerLevel = 'Novice';
 
   if (totalPlayed >= 10 && totalWin / totalPlayed >= 0.5 && totalGoalScored >= 20) {
-      playerLevel = 'Intermediate';
+      playerLevel = 'Skilled';
   } else if (totalPlayed >= 20 && totalWin / totalPlayed >= 0.6 && totalGoalScored >= 50) {
-      playerLevel = 'Advanced';
+      playerLevel = 'Expert';
   }
 
   return playerLevel;
