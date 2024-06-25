@@ -177,11 +177,23 @@ exports.getAllPlayers = (req, res) => {
                 ELSE '' 
             END AS avatar 
         FROM players`, [global.playersLocation, global.playersLocation])
-    .then(result => {
-      res.json(result);
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      res.status(500).send('Internal Server Error');
+    .then(async result => {
+      try {
+        // Create an array to hold all promises for getPlayerStats
+        const getPlayerStatsPromises = result.map(async (player, i) => {
+          const playerStats = await getPlayerStats(player.id);
+          // Add playerStats to the player object
+          return { ...player, playerStats };
+        });
+
+        // Wait for all getPlayerStats promises to resolve
+        const playersWithStats = await Promise.all(getPlayerStatsPromises);
+
+        // Respond with the modified result JSON
+        res.json(playersWithStats);
+      } catch (error) {
+        console.error(error); // Handle any errors
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
     });
 };
