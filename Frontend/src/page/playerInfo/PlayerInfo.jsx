@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./playerinfo.module.css";
 import axios from "axios";
 import Swal from "sweetalert2";
+import PlayerCard from "../../component/card/playerCard/PlayerCard";
 
 function PlayerInfo() {
   const BaseURL = import.meta.env.VITE_API_BASE_URL;
@@ -92,7 +93,7 @@ function PlayerInfo() {
               </div>
 
               <div className="mt-3">
-                <table className="table table-striped text-white">
+                {/* <table className="table table-striped text-white">
                   <thead>
                     <tr>
                       <th scope="col">#</th>
@@ -125,9 +126,17 @@ function PlayerInfo() {
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table> */}
               </div>
             </div>
+          </div>
+
+          <div className="d-flex align-content-start flex-wrap mt-5">
+            {playerData.map((player, index) => (
+              <div key={index}>
+                <PlayerCard player={player}/>
+              </div>
+            ))}
           </div>
         </div>
       </div>
