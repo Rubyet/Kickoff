@@ -1,8 +1,9 @@
 const db = require('../config/db-connection');
 const upload = require('../config/file-upload');
+const teamController = require('../controllers/teamController');
 // Create a new player
 exports.createPlayer = (req, res) => {
-  const {name} = req.body;
+  const { name } = req.body;
   const images = req.files.map(file => file.filename); // Get uploaded file names
   const image = images[0]; // Assuming the first file is 'image'
   const avatar = images[1]; // Assuming the second file is 'avatar'
@@ -31,10 +32,18 @@ exports.getPlayerById = (req, res) => {
          WHERE id = (${playerIdsStr})`,
     [global.playersLocation, global.playersLocation]
   )
-    .then(result => {
+    .then(async result => {
       if (result.length === 0) {
         res.status(404).send('Player not found');
       } else {
+        try {
+          const playerStats = await getPlayerStats(playerIdsStr);
+          result[0].playerStats = playerStats;
+          console.log(playerStats) ;
+        } catch (error) {
+          console.error(error); // Handle any errors
+        }
+        console.log(result[0]);
         return res.json(result[0]);
       }
     })
@@ -44,8 +53,87 @@ exports.getPlayerById = (req, res) => {
     });
 };
 
+// player stats
+
+function getPlayerStats(playerId) {
+  console.log("Player ID", playerId);
+  return new Promise((resolve, reject) => {
+      const query = `
+          SELECT * FROM matches 
+          WHERE (player_home_id = ? OR player_away_id = ?) AND is_complete = 1
+      `;
+      db.query(query, [playerId, playerId])
+          .then(results => {
+              let totalPlayed = 0;
+              let totalWin = 0;
+              let totalLose = 0;
+              let totalDraw = 0;
+              let totalGoalScored = 0;
+              let totalGoalAgainst = 0;
+
+              results.forEach(match => {
+                  totalPlayed++;
+
+                  if (match.team_home_goal > match.team_away_goal) {
+                      if (match.player_home_id === playerId) {
+                          totalWin++;
+                      } else {
+                          totalLose++;
+                      }
+                  } else if (match.team_home_goal < match.team_away_goal) {
+                      if (match.player_home_id === playerId) {
+                          totalLose++;
+                      } else {
+                          totalWin++;
+                      }
+                  } else {
+                      totalDraw++;
+                  }
+
+                  if (match.player_home_id === playerId) {
+                      totalGoalScored += match.team_home_goal;
+                      totalGoalAgainst += match.team_away_goal;
+                  } else {
+                      totalGoalScored += match.team_away_goal;
+                      totalGoalAgainst += match.team_home_goal;
+                  }
+              });
+
+              const playerLevel = calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored);
+
+              const playerStats = {
+                  totalPlayed,
+                  totalWin,
+                  totalLose,
+                  totalDraw,
+                  totalGoalScored,
+                  totalGoalAgainst,
+                  playerLevel
+              };
+
+              resolve(playerStats);
+          })
+          .catch(error => {
+              reject(error);
+          });
+  });
+}
+
+function calculatePlayerLevel(totalPlayed, totalWin, totalGoalScored) {
+  // Example calculation of player level
+  let playerLevel = 'Beginner';
+
+  if (totalPlayed >= 10 && totalWin / totalPlayed >= 0.5 && totalGoalScored >= 20) {
+      playerLevel = 'Intermediate';
+  } else if (totalPlayed >= 20 && totalWin / totalPlayed >= 0.6 && totalGoalScored >= 50) {
+      playerLevel = 'Advanced';
+  }
+
+  return playerLevel;
+}
+
 exports.updatePlayerById = (req, res) => {
-  const {name} = req.body;
+  const { name } = req.body;
   const images = req.files.map(file => file.filename); // Get uploaded file names
   const image = images[0]; // Assuming the first file is 'image'
   const avatar = images[1]; // Assuming the second file is 'avatar'
