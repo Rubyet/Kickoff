@@ -4,7 +4,7 @@ import style from './playerCard.module.css'
 function PlayerCard(props) {
     const BaseURL = import.meta.env.VITE_API_BASE_URL;
     // console.log(props)
-    const [bgImage, setBgImage] = useState('../../asset/image/card_bg.png');
+    const [bgImage, setBgImage] = useState('../../asset/image/card_bg.webp');
 
     useEffect(() => {
     }, [])
