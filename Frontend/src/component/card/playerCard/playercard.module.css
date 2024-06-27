@@ -7,7 +7,7 @@
 .fut_player_card {
 	width: 100%;
 	height: 100%;
-	background-image: url(https://www.fifarosters.com/assets/cards/fifa24/cards_bg_e_1_3_1.png);
+	background-image: url(../../../asset/image/player_card_bg.webp);
 	background-position: center center;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
