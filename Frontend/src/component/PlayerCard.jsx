@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import style from './playerCard.module.css'
 
 function PlayerCard(props) {
+    console.log(props);
     const BaseURL = import.meta.env.VITE_API_BASE_URL;
     // console.log(props)
     const [bgImage, setBgImage] = useState('../../asset/image/card_bg.webp');
@@ -14,7 +15,7 @@ function PlayerCard(props) {
             <div className={`${style.fifa_card} ${style.front}`}>
                 <div className={style.bg} style={{ backgroundImage: `url('${bgImage}')` }}></div>
                 <div className={style.status}>
-                    <span className={style.lvl}>99</span>
+                    <span className={style.lvl}>{props?.data?.playerStats.totalGoalScored}</span>
                     {/* <span className={style.pos}>ST</span> */}
                     <span className={style.country}></span>
                     {/* <span className={style.team}></span> */}
